@@ -132,11 +132,10 @@ function renderPage({ title, body, url, config, notFound = false }) {
   <a class="skip-link" href="#main">本文へスキップ</a>
   <div class="site-shell">
     <header class="site-header">
-      <a class="brand" href="/" aria-label="${escapeHtml(config.name)} トップへ">
+      <a class="brand" href="/" aria-label="${escapeHtml(config.name)}">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>${escapeHtml(config.name)}</span>
       </a>
-      <a class="home-link" href="/"${home ? ' aria-current="page"' : ""}>トップへ <span aria-hidden="true">↗</span></a>
     </header>
     <main id="main" tabindex="-1">
       <div class="page-label"><span aria-hidden="true"></span> ${notFound ? "NOT FOUND" : home ? "A LITTLE ABOUT ME" : "MY NOTES & LINKS"}</div>

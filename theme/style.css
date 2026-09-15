@@ -50,16 +50,15 @@ a:focus-visible, summary:focus-visible {
 .site-shell { width: min(100% - 3rem, 680px); margin-inline: auto; }
 .site-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
   padding-block: 2rem;
   border-bottom: 1px solid var(--line);
 }
 .brand {
-  display: inline-flex;
+  position: relative;
+  display: inline-block;
   align-items: center;
-  gap: .7rem;
   color: var(--ink);
   font-size: 1.2rem;
   font-weight: 750;
@@ -67,21 +66,16 @@ a:focus-visible, summary:focus-visible {
   letter-spacing: -.04em;
 }
 .brand-mark {
+  position: absolute;
+  right: calc(100% + .7rem);
+  top: 50%;
   width: 13px;
   height: 24px;
-  transform: skew(-25deg);
+  transform: translateY(-50%) skew(-25deg);
   background: #399fc0;
   border-right: 4px solid #b2e2ef;
 }
 .brand-dot { color: var(--blue); }
-.home-link {
-  font-size: .75rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.home-link span { margin-right: .4rem; }
 main { padding-block: 3.8rem 3rem; }
 .page-label {
   display: flex;
