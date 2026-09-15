@@ -103,7 +103,7 @@ main { padding-block: 3.8rem 3rem; }
   font-weight: 750;
   letter-spacing: -.045em;
 }
-.home h1 { font-size: clamp(3.8rem, 13vw, 5.5rem); line-height: 1.1; }
+.home h1 { font-size: clamp(2.15rem, 7vw, 3.5rem); line-height: 1.1; }
 .prose h2 {
   display: flex;
   align-items: center;
