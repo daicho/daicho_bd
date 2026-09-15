@@ -24,7 +24,6 @@ http://127.0.0.1:4173 を開きます。終了は `Ctrl+C` です。
 `dev` / `preview` は起動時にビルドします。起動後にMarkdownやCSSを編集したら、別ターミナルで `npm run build` を実行してブラウザーを再読み込みしてください。自動リロードはありません。
 
 ```powershell
-npm test
 npm run build
 ```
 
@@ -151,11 +150,11 @@ git push -u origin main
 
 以降はMarkdownの変更をpushするだけです。
 
-- **`main`へのpush:** 依存関係の導入 → テスト → HTML生成 → Firebase Hosting本番公開。
-- **`main`向けPull Request:** テストとHTML生成のみ。認証情報は使わず、本番にもプレビューにもデプロイしません。
+- **`main`へのpush:** 依存関係の導入 → HTML生成 → Firebase Hosting本番公開。
+- **`main`向けPull Request:** HTML生成のみ。認証情報は使わず、本番にもプレビューにもデプロイしません。
 - **Actionsから手動実行:** `main` を選ぶと本番公開できます。他のブランチはビルドのみです。
 
-[Actions画面](https://github.com/daicho/daicho_bd/actions) で結果を確認できます。認証Secretが未設定なら、デプロイ工程が明示的に失敗します。テストやビルドが失敗した場合も、既存の公開サイトは更新されません。
+[Actions画面](https://github.com/daicho/daicho_bd/actions) で結果を確認できます。認証Secretが未設定なら、デプロイ工程が明示的に失敗します。ビルドが失敗した場合も、既存の公開サイトは更新されません。
 
 Firebaseの設定はSPA用の全URL書き換えをせず、各ページのHTMLを配信します。存在しないページは、トップへのリンクを付けた404ページになります。
 
@@ -165,7 +164,6 @@ Firebaseの設定はSPA用の全URL書き換えをせず、各ページのHTML�
 content/                編集するMarkdown・画像
 theme/                  共通CSS・favicon
 scripts/                静的HTML生成・ローカルプレビュー
-test/                   生成とリンク変換のテスト
 site.config.mjs         表示名・説明・公開URL
 firebase.json           Hosting設定
 .firebaserc             FirebaseプロジェクトID
