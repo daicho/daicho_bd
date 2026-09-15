@@ -183,17 +183,12 @@ main { padding-block: 3.8rem 3rem; }
 .back-link { display: inline-block; margin-top: 2.5rem; font-size: .85rem; text-decoration: none; }
 .back-link span { margin-right: .6rem; }
 .site-footer {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
+  text-align: center;
   padding-block: 1.5rem 2.2rem;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: .65rem;
 }
-.footer-signature { letter-spacing: .1em; }
-.footer-signature span { color: var(--blue); margin-left: .1rem; }
 @media (max-width: 480px) {
   .site-shell { width: calc(100% - 2.5rem); }
   .site-header { padding-block: 1.5rem; }

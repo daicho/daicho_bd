@@ -7,7 +7,6 @@ import { buildSite, pageUrl } from "../scripts/site.mjs";
 
 const config = {
   name: 'daicho & "links"',
-  tagline: "好きなものを、好きな言葉で。",
   description: 'A <small> site & "notes"',
   language: "ja",
   url: "https://daicho-bd.web.app",
@@ -61,6 +60,9 @@ test("builds pages, containers, assets, metadata and home navigation", async (t)
   const missing = await readFile(path.join(root, "dist", "404.html"), "utf8");
   assert.match(missing, /name="robots" content="noindex"/);
   assert.match(missing, /class="back-link" href="\/"/);
+  for (const html of [home, about, missing]) {
+    assert.match(html, /<footer class="site-footer">\s*Copyright &copy; 2026 daicho\s*<\/footer>/);
+  }
 });
 
 test("rewrites relative nested links, queries and fragments without changing external URLs", async (t) => {

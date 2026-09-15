@@ -134,7 +134,7 @@ function renderPage({ title, body, url, config, notFound = false }) {
     <header class="site-header">
       <a class="brand" href="/" aria-label="${escapeHtml(config.name)} トップへ">
         <span class="brand-mark" aria-hidden="true"></span>
-        <span>${escapeHtml(config.name)}<span class="brand-dot">.</span></span>
+        <span>${escapeHtml(config.name)}</span>
       </a>
       <a class="home-link" href="/"${home ? ' aria-current="page"' : ""}><span aria-hidden="true">↗</span> トップへ</a>
     </header>
@@ -146,8 +146,7 @@ ${body}
       ${home ? "" : '<a class="back-link" href="/"><span aria-hidden="true">←</span> トップに戻る</a>'}
     </main>
     <footer class="site-footer">
-      <span>${escapeHtml(config.tagline)}</span>
-      <span class="footer-signature">WORDS, LINKS & ME<span aria-hidden="true">.</span></span>
+      Copyright &copy; 2026 daicho
     </footer>
   </div>
 </body>
