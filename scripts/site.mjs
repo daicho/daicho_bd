@@ -107,7 +107,7 @@ function inlineText(token) {
 
 function renderPage({ title, body, url, config, notFound = false }) {
   const home = url === "/";
-  const documentTitle = home ? `${config.name} | links` : `${title} | ${config.name}`;
+  const documentTitle = home ? `${config.name}` : `${title} | ${config.name}`;
   const canonical = new URL(url, config.url).href;
   return `<!doctype html>
 <html lang="${escapeHtml(config.language)}">
@@ -136,7 +136,7 @@ function renderPage({ title, body, url, config, notFound = false }) {
         <span class="brand-mark" aria-hidden="true"></span>
         <span>${escapeHtml(config.name)}</span>
       </a>
-      <a class="home-link" href="/"${home ? ' aria-current="page"' : ""}><span aria-hidden="true">↗</span> トップへ</a>
+      <a class="home-link" href="/"${home ? ' aria-current="page"' : ""}>トップへ <span aria-hidden="true">↗</span></a>
     </header>
     <main id="main" tabindex="-1">
       <div class="page-label"><span aria-hidden="true"></span> ${notFound ? "NOT FOUND" : home ? "A LITTLE ABOUT ME" : "MY NOTES & LINKS"}</div>
@@ -208,7 +208,7 @@ export async function buildSite({ root, config }) {
   }
   await writeFile(path.join(outputDir, "404.html"), renderPage({
     title: "ページが見つかりません",
-    body: "<h1>道に迷っても。</h1><p>このページは見つかりませんでした。トップから、もう一度。</p>",
+    body: "<h1>ページが見つかりません</h1><p>このページは見つかりませんでした。</p>",
     url: "/404.html",
     config,
     notFound: true,
