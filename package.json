@@ -1,0 +1,21 @@
+{
+  "name": "daicho-bd",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A Markdown-powered personal link site on Firebase Hosting.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/preview.mjs",
+    "preview": "node scripts/preview.mjs",
+    "test": "node --test",
+    "deploy": "npm run build && firebase deploy --only hosting --project daicho-bd"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0",
+    "markdown-it-container": "^4.0.0"
+  }
+}
