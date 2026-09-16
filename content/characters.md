@@ -1,3 +1,7 @@
+::: label
+FAVORITE CHARACTERS
+:::
+
 # 好きなキャラクター
 
 - 高松燈（MyGO!!!!!）

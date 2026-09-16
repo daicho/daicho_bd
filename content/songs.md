@@ -1,3 +1,7 @@
+::: label
+FAVORITE SONGS
+:::
+
 # 好きな曲
 
 - 人生

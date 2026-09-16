@@ -68,6 +68,12 @@ function createMarkdown(files) {
         : "</div>\n",
     });
   }
+  md.use(container, "label", {
+    validate: (params) => params.trim() === "label",
+    render: (tokens, index) => tokens[index].nesting === 1
+      ? '<div class="page-label"><span aria-hidden="true"></span>\n'
+      : "</div>\n",
+  });
   md.core.ruler.push("site-links-and-headings", (state) => {
     const usedIds = new Set();
     state.tokens.forEach((token, index) => {
@@ -138,7 +144,6 @@ function renderPage({ title, body, url, config, notFound = false }) {
       </a>
     </header>
     <main id="main" tabindex="-1">
-      <div class="page-label"><span aria-hidden="true"></span> ${notFound ? "NOT FOUND" : home ? "A LITTLE ABOUT ME" : "MY NOTES & LINKS"}</div>
       <article class="prose${home ? " home" : ""}">
 ${body}
       </article>
@@ -187,7 +192,9 @@ export async function buildSite({ root, config }) {
     const title = inlineText(tokens[headingIndex + 1]);
     rendered.push({
       output: `${decodeURIComponent(pageUrl(source)).slice(1)}index.html`,
-      html: renderPage({ title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config }),
+      html: renderPage({
+        title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config,
+      }),
     });
   }
   // Validate every page before replacing the previous successful build.

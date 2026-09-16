@@ -1,3 +1,7 @@
+::: label
+FAVORITE VOICE ACTORS
+:::
+
 # 好きな声優
 
 ※一部、本職が声優でない方もいます。

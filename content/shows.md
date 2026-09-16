@@ -1,3 +1,7 @@
+::: label
+FAVORITE RADIO & STREAMING SHOWS
+:::
+
 # 好きなラジオ・配信番組
 
 - はなまきこもちぃ

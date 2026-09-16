@@ -1,3 +1,7 @@
+::: label
+ANIME WATCH HISTORY
+:::
+
 # アニメ視聴歴
 
 これまでに視聴したアニメの一覧です。

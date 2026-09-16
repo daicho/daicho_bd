@@ -1,3 +1,7 @@
+::: label
+A LITTLE ABOUT ME
+:::
+
 # だいちょ / daicho
 
 長野の東の方に生息しているオタクです。
