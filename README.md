@@ -21,7 +21,7 @@ npm run dev
 ```
 
 http://127.0.0.1:4173 を開きます。終了は `Ctrl+C` です。
-`dev` / `preview` は起動時にビルドします。起動後にMarkdownやCSSを編集したら、別ターミナルで `npm run build` を実行してブラウザーを再読み込みしてください。自動リロードはありません。
+`dev` / `preview` は起動時にビルドします。起動後に `content` 内のMarkdown・画像・添付ファイル、`theme` 内のCSSなど、`site.config.mjs`、または `scripts/site.mjs` を保存すると、サイトを自動で再ビルドし、開いているブラウザーを自動で再読み込みします。Markdownの記法やリンクにエラーがある場合は、直前の正常な表示を維持しつつターミナルにエラーを表示します。開発サーバー自体を変更する `scripts/preview.mjs` の変更は、いったん `npm run dev` を終了して再起動してください。
 
 ```powershell
 npm run build
