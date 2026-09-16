@@ -2,25 +2,6 @@
 
 バンドリを中心に、参加したライブ・イベントと今後の参加予定をまとめています。
 
-## 参加予定
-
-| 日付 | イベント | 会場 |
-| --- | --- | --- |
-| 2026/9/19〜20 | ナガノアニエラフェスタ2026 | 駒場公園 |
-| 2026/9/22 | Morfonica LIVE「Movement」 | TACHIKAWA STAGE GARDEN |
-| 2026/9/25 | 夢限大みゅーたいぷ「新宿着陸計画」DAY2 | Zepp Shinjuku |
-| 2026/10/10 | Poppin'Party「Now Roading♪♪」 | 東京ガーデンシアター |
-| 2026/10/11 | 夢限大みゅーたいぷ「DIMENSIONAL OVERLAP」 | 東京ガーデンシアター |
-| 2026/10/12 | RAISE A SUILEN「EXTREME EXPRESS」 | 東京ガーデンシアター |
-| 2026/10/24 | Ave Mujica 7th LIVE「Virtus」DAY1 | 京王アリーナ TOKYO |
-| 2026/10/25 | Bushiroad Fashion Journey | Shibuya Hikarie |
-| 2026/11/3 | ガールズバンドクライ Special LIVE “赤色の響祭” | ぴあアリーナMM |
-| 2026/11/14〜15 | MyGO!!!!! 9th LIVE「つなぎ目の向こうに」 - 神戸再景編 - | ワールド記念ホール |
-| 2026/12/12 | 一家Dumb Rock! 1st LIVE（当たれば） | duo MUSIC EXCHANGE |
-| 2026/12/25 | millsage 1st LIVE（当たれば） | Spotify O-WEST |
-| 2027/1/8 | ブシロード新春大発表会2027 | Kanadevia Hall |
-| 2027/6/12〜13 | ブシロード20周年記念ライブ | 横浜アリーナ |
-
 ## 参加したライブ・イベント
 
 | 日付 | イベント | 会場 |

@@ -59,7 +59,7 @@ function rewriteLink(href, source, files) {
 }
 
 function createMarkdown(files) {
-  const md = new MarkdownIt({ html: false, linkify: true, typographer: false });
+  const md = new MarkdownIt({ breaks: true, html: false, linkify: true, typographer: false });
   for (const name of ["links", "note"]) {
     md.use(container, name, {
       validate: (params) => params.trim() === name,
@@ -145,7 +145,7 @@ ${body}
       ${home ? "" : '<a class="back-link" href="/"><span aria-hidden="true">←</span> トップに戻る</a>'}
     </main>
     <footer class="site-footer">
-      Copyright &copy; 2026 daicho
+      Copyright &copy; 2026 だいちょ
     </footer>
   </div>
 </body>

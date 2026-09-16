@@ -90,14 +90,14 @@ main { padding-block: 3.8rem 3rem; }
 .page-label span { width: 7px; height: 7px; background: var(--yellow); }
 .prose { line-height: 1.95; font-size: .95rem; overflow-wrap: anywhere; }
 .prose > :first-child { margin-top: 0; }
-.prose h1, .prose h2, .prose h3 { line-height: 1.4; }
+.prose h2, .prose h3 { line-height: 1.4; }
 .prose h1 {
   margin-bottom: 1.4rem;
-  font-size: clamp(2.15rem, 7vw, 3.5rem);
+  font-size: clamp(2.15rem, 7vw, 3rem);
   font-weight: 750;
   letter-spacing: -.045em;
+  line-height: 1.1;
 }
-.home h1 { font-size: clamp(2.15rem, 7vw, 3.5rem); line-height: 1.1; }
 .prose h2 {
   display: flex;
   align-items: center;
@@ -125,8 +125,18 @@ main { padding-block: 3.8rem 3rem; }
 .prose code { padding: .15em .4em; border-radius: 4px; background: #d9eef5; font-size: .9em; }
 .prose pre { overflow-x: auto; padding: 1.2rem; border-radius: 12px; background: #d9eef5; }
 .prose pre code { padding: 0; background: transparent; }
-.prose table { display: block; overflow-x: auto; border-collapse: collapse; font-size: .85rem; }
-.prose th, .prose td { border: 1px solid var(--line); padding: .6rem .9rem; text-align: left; }
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: separate;
+  border-spacing: 3px;
+  border-radius: 14px;
+  overflow: hidden;
+  font-size: .85rem;
+}
+.prose th, .prose td { border: none; padding: .5rem .8rem; background: #ffffffc0; }
+.prose th { text-align: center; }
+.prose td { text-align: left; }
 .note {
   margin-block: 1.5rem;
   padding: .2rem 1.1rem;
@@ -181,7 +191,7 @@ main { padding-block: 3.8rem 3rem; }
   padding-block: 1.5rem 2.2rem;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: .65rem;
+  font-size: .7rem;
 }
 @media (max-width: 480px) {
   .site-shell { width: calc(100% - 2.5rem); }
