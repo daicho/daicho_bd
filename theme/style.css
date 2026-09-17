@@ -159,7 +159,7 @@ main { padding-block: 3.8rem 3rem; }
   color: var(--muted);
   font-size: .8rem;
   box-shadow: 0 2px 7px #2b7d9b05;
-  transition: border-color .18s, border-left-color .18s, transform .18s, box-shadow .18s;
+  transition: border-left-color .18s, transform .18s, box-shadow .18s;
 }
 .link-card::after {
   content: "↗";
@@ -172,8 +172,6 @@ main { padding-block: 3.8rem 3rem; }
   pointer-events: none;
 }
 .link-card:hover {
-  transform: translateY(-2px);
-  border-color: #7cbcd1;
   border-left-color: var(--yellow);
   box-shadow: 0 6px 15px #2b7d9b0c;
 }
