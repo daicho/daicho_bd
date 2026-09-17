@@ -9,6 +9,8 @@ const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 
 const encodePath = (value) => value.split("/").map(encodeURIComponent).join("/");
 
+const isExternalLink = (href) => /^(?:https?:)?\/\//i.test(href);
+
 export function pageUrl(file) {
   const stem = file.replace(/\.md$/i, "");
   const route = stem === "index" ? "" : stem.replace(/\/index$/, "");
@@ -90,6 +92,10 @@ function createMarkdown(files) {
         for (const attr of ["href", "src"]) {
           const value = child.attrGet(attr);
           if (value !== null) child.attrSet(attr, rewriteLink(value, state.env.source, files));
+        }
+        if (child.type === "link_open" && isExternalLink(child.attrGet("href"))) {
+          child.attrJoin("class", "external-link");
+          child.attrSet("target", "_blank");
         }
         if (child.type === "image") {
           child.attrSet("loading", "lazy");

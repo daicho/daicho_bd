@@ -57,6 +57,7 @@ FAVORITE VOICE ACTORS
 - 宮沢小春
 - 遠野ひかる
 - 花宮初奈
+- 日高里菜
 
 ## Links
 
