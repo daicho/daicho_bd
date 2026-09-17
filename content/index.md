@@ -99,15 +99,29 @@ Xへの投稿は、ライブレポやアニメ実況、グッズ報告など色�
 
 ## Links
 
-::: links
-- [X（アニメ・ライブ）](https://x.com/daicho_bd)
-  アニメ、バンドリ、ライブなどの話はこちら。
-- [X（その他の趣味）](https://x.com/daicho_sub)
-  けん玉や競技プログラミングなどの話はこちら。
-- [イベンターノート](https://www.eventernote.com/)
-  ライブ・イベントの記録サービス。
-- [AtCoder](https://atcoder.jp/)
-  競技プログラミングのコンテストに参加しています。
-- [このサイトについて（技術者向け）](about.md)
-  このサイトの構成とライセンスについて。
+::: link
+[X（アニメ・ライブ）](https://x.com/daicho_bd)
+@daicho_bd
+アニメ、バンドリ、ライブなどの話はこちら。
+:::
+
+::: link
+[X（その他の趣味）](https://x.com/daicho_sub)
+@daicho_sub
+けん玉や競技プログラミングなどの話はこちら。
+:::
+
+::: link
+[イベンターノート](https://www.eventernote.com/)
+ライブ・イベントの記録サービス。
+:::
+
+::: link
+[AtCoder](https://atcoder.jp/)
+競技プログラミングのコンテストに参加しています。
+:::
+
+::: link
+[このサイトについて（技術者向け）](about.md)
+このサイトの構成とライセンスについて。
 :::

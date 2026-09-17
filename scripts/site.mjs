@@ -60,11 +60,11 @@ function rewriteLink(href, source, files) {
 
 function createMarkdown(files) {
   const md = new MarkdownIt({ breaks: true, html: false, linkify: true, typographer: false });
-  for (const name of ["links", "note"]) {
+  for (const name of ["link", "note"]) {
     md.use(container, name, {
       validate: (params) => params.trim() === name,
       render: (tokens, index) => tokens[index].nesting === 1
-        ? `<div class="${name === "links" ? "link-cards" : "note"}">\n`
+        ? `<div class="${name === "link" ? "link-card" : "note"}">\n`
         : "</div>\n",
     });
   }

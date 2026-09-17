@@ -76,15 +76,18 @@ MY FAVORITES
 
 ### リンクカード
 
-`markdown-it-container` の `links` コンテナーを使うと、リストが大きなリンクカードになります。
-各項目にリンクを1つ置き、その次の行を2スペース下げると説明文になります。カード全体をタップできます。
+`markdown-it-container` の `link` コンテナーを使うと、そのブロックが大きなリンクカードになります。
+カードごとにリンクを1つ置き、続く行に説明文を書きます。カード全体をタップできます。
 
 ```markdown
-::: links
-- [X / Twitter](https://x.com/your_handle)
-  日々のこと、好きな音楽のこと。
-- [自己紹介](about.md)
-  私について。
+::: link
+[X / Twitter](https://x.com/your_handle)
+日々のこと、好きな音楽のこと。
+:::
+
+::: link
+[自己紹介](about.md)
+私について。
 :::
 ```
 
