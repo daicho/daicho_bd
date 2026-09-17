@@ -25,12 +25,12 @@ MyGO!!!!!を好きになって以来、ライブにもよく行くようにな�
 
 ## 好きなものまとめ
 
-- [好きなアニメ](anime.md)
-- [好きなキャラクター](characters.md)
-- [好きな声優](voice-actors.md)
-- [好きな曲](songs.md)
-- [好きなラジオ・配信番組](shows.md)
-- [好きなゲーム](games.md)
+- [好きなアニメ](anime/favorites.md)
+- [好きなキャラクター](character/favorites.md)
+- [好きな声優](voice-actor/favorites.md)
+- [好きな曲](song/favorites.md)
+- [好きなラジオ・配信番組](show/favorites.md)
+- [好きなゲーム](game/index.md)
 
 ## スタンス
 
@@ -74,9 +74,9 @@ Xへの投稿は、ライブレポやアニメ実況、グッズ報告など色�
 
 ## 私の人生
 
-- [ライブ・イベント参加歴](live/index.md)
-- [アニメ視聴歴](anime-history.md)
-- [オタク年表](otaku-timeline.md)
+- [ライブ・イベント参加歴](live/history.md)
+- [アニメ視聴歴](anime/history.md)
+- [オタク年表](life/otaku-timeline.md)
 
 ## その他の趣味
 

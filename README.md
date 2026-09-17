@@ -37,9 +37,8 @@ npm run build
 | --- | --- |
 | `content/index.md` | `/` |
 | `content/about.md` | `/about/` |
-| `content/favorites.md` | `/favorites/` |
-| `content/notes/index.md` | `/notes/` |
-| `content/notes/live.md` | `/notes/live/` |
+| `content/anime/favorites.md` | `/anime/favorites/` |
+| `content/live/history.md` | `/live/history/` |
 
 たとえば `content/notes/live.md` を追加します。
 
@@ -53,7 +52,7 @@ npm run build
 **太字**、リスト、引用、画像、表、コードブロックなどが使えます。
 
 [トップへ](../index.md)
-[好きなもの](../favorites.md)
+[好きなアニメ](../anime/favorites.md)
 ```
 
 トップページなどに `[ライブの記録](notes/live.md)` と書けば、ビルド時に `/notes/live/` に変換されます。
@@ -118,7 +117,7 @@ HTMLの直接埋め込みは無効です。装飾はMarkdownとコンテナー�
 重複時は `-2`、`-3` が付きます。
 
 ```markdown
-[音楽の項目へ](favorites.md#music)
+[音楽の項目へ](song/favorites.md#music)
 [ページ内へ](#好きな音楽)
 ```
 

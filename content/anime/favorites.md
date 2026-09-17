@@ -63,31 +63,31 @@ FAVORITE ANIME
 - ゆるキャン△
 
 ::: link
-[アニメ視聴歴](anime-history.md)
+[アニメ視聴歴](history.md)
 視聴済みアニメの一覧。
 :::
 
 ::: link
-[好きなキャラクター](characters.md)
+[好きなキャラクター](../character/favorites.md)
 好きなキャラクター。
 :::
 
 ::: link
-[好きな声優](voice-actors.md)
+[好きな声優](../voice-actor/favorites.md)
 好きな声優さん。
 :::
 
 ::: link
-[好きな曲](songs.md)
+[好きな曲](../song/favorites.md)
 よく聴く曲。
 :::
 
 ::: link
-[好きなラジオ・配信番組](shows.md)
+[好きなラジオ・配信番組](../show/favorites.md)
 聴いているラジオと見ている配信番組。
 :::
 
 ::: link
-[好きなゲーム](games.md)
+[好きなゲーム](../game/index.md)
 遊んでいるゲーム。
 :::
