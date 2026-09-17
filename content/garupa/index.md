@@ -1,0 +1,5 @@
+::: label
+ABOUT GARUPA
+:::
+
+# ガルパについて
