@@ -151,14 +151,15 @@ main { padding-block: 3.8rem 3rem; }
 .link-card {
   position: relative;
   margin-block: .8rem;
-  padding: 1.05rem 3.4rem 1.05rem 1.35rem;
+  padding: 1rem 3.4rem 1rem 1.2rem;
   border: 1px solid #c4e1ec;
-  border-radius: 12px;
-  background: #ffffffd9;
+  border-left: 3px solid #62b9d4;
+  border-radius: 5px;
+  background: #ffffffc0;
   color: var(--muted);
   font-size: .8rem;
-  box-shadow: 0 3px 10px #2b7d9b04;
-  transition: border-color .18s, transform .18s, box-shadow .18s;
+  box-shadow: 0 2px 7px #2b7d9b05;
+  transition: border-color .18s, border-left-color .18s, transform .18s, box-shadow .18s;
 }
 .link-card::after {
   content: "↗";
@@ -173,7 +174,8 @@ main { padding-block: 3.8rem 3rem; }
 .link-card:hover {
   transform: translateY(-2px);
   border-color: #7cbcd1;
-  box-shadow: 0 7px 18px #2b7d9b0c;
+  border-left-color: var(--yellow);
+  box-shadow: 0 6px 15px #2b7d9b0c;
 }
 .link-card p { margin: 0; }
 .link-card a {
@@ -182,7 +184,7 @@ main { padding-block: 3.8rem 3rem; }
   font-weight: 650;
   text-decoration: none;
 }
-.link-card a::after { content: ""; position: absolute; inset: 0; border-radius: 12px; }
+.link-card a::after { content: ""; position: absolute; inset: 0; border-radius: 5px; }
 .link-card a:focus-visible { outline: none; }
 .link-card a:focus-visible::after { outline: 3px solid var(--blue); outline-offset: 3px; }
 .back-link { display: inline-block; margin-top: 2.5rem; font-size: .85rem; text-decoration: none; }
@@ -199,7 +201,7 @@ main { padding-block: 3.8rem 3rem; }
   .site-header { padding-block: 1.5rem; }
   main { padding-top: 2.8rem; }
   .prose { font-size: .9rem; }
-  .link-card { padding-left: 1.1rem; }
+  .link-card { padding-left: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
