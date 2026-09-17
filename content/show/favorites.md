@@ -9,6 +9,7 @@ FAVORITE RADIO & STREAMING SHOWS
 - 花谷麻妃のすこやかゲーミング倶楽部
 - 中澤ミナのゲームはじめたて
 - MyGO!!!!!の迷子集会
+- HiBiKi StYle＋
 - 洲崎西
 
 ## Links
