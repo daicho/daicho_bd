@@ -1,11 +1,11 @@
 :root {
   color-scheme: light;
-  --sky: #eaf8fc;
-  --ink: #193d50;
-  --muted: #526f7d;
-  --blue: #167899;
-  --line: #c6e3ee;
-  --yellow: #f2ce45;
+  --sky: #ecf6fd;
+  --ink: #163b53;
+  --muted: #4d6d82;
+  --blue: #12659d;
+  --line: #c4def0;
+  --yellow: #f1d837;
   font-family: "Aptos", "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
   color: var(--ink);
   background: var(--sky);
@@ -21,7 +21,7 @@ body {
   min-width: 280px;
   min-height: 100vh;
   background:
-    linear-gradient(128deg, transparent 58%, #d8f0f780 58%, #d8f0f780 74%, transparent 74%),
+    linear-gradient(128deg, transparent 58%, #d7ebf860 58%, #d7ebf860 74%, transparent 74%),
     radial-gradient(ellipse at 10% 0%, #fff 0%, transparent 65%);
   background-attachment: fixed;
 }
@@ -29,7 +29,7 @@ body::before {
   content: "";
   display: block;
   height: 4px;
-  background: linear-gradient(90deg, #62b9d4 0%, #b2e2ef 95%, var(--yellow) 95%);
+  background: linear-gradient(90deg, #5da7d9 0%, #b0d7f1 95%, var(--yellow) 95%);
 }
 a { color: var(--blue); text-decoration: none; text-underline-offset: .23em; }
 a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
@@ -82,8 +82,8 @@ a:focus-visible, summary:focus-visible {
   width: 13px;
   height: 24px;
   transform: translateY(-50%) skew(-25deg);
-  background: #399fc0;
-  border-right: 4px solid #b2e2ef;
+  background: #338bc6;
+  border-right: 4px solid #b0d7f1;
 }
 .brand-dot { color: var(--blue); }
 main { padding-block: 3.8rem 3rem; }
@@ -131,11 +131,11 @@ main { padding-block: 3.8rem 3rem; }
 .prose blockquote {
   margin-inline: 0;
   padding: .2rem 1.2rem;
-  border-left: 3px solid #78bed4;
+  border-left: 3px solid #74b0d8;
   color: var(--muted);
 }
-.prose code { padding: .15em .4em; border-radius: 4px; background: #d9eef5; font-size: .9em; }
-.prose pre { overflow-x: auto; padding: 1.2rem; border-radius: 12px; background: #d9eef5; }
+.prose code { padding: .15em .4em; border-radius: 4px; background: #d8eaf6; font-size: .9em; }
+.prose pre { overflow-x: auto; padding: 1.2rem; border-radius: 12px; background: #d8eaf6; }
 .prose pre code { padding: 0; background: transparent; }
 .prose table {
   display: block;
@@ -152,7 +152,7 @@ main { padding-block: 3.8rem 3rem; }
 .note {
   margin-block: 1.5rem;
   padding: .2rem 1.1rem;
-  border-left: 2px solid #69b4cd;
+  border-left: 2px solid #64a6d2;
   background: #ffffff70;
   border-radius: 0 10px 10px 0;
   color: var(--muted);
@@ -162,13 +162,13 @@ main { padding-block: 3.8rem 3rem; }
   position: relative;
   margin-block: .8rem;
   padding: 1rem 3.4rem 1rem 1.2rem;
-  border: 1px solid #c4e1ec;
-  border-left: 3px solid #62b9d4;
+  border: 1px solid #c2dcee;
+  border-left: 3px solid #5da7d9;
   border-radius: 5px;
   background: #ffffffc0;
   color: var(--muted);
   font-size: .8rem;
-  box-shadow: 0 2px 7px #2b7d9b05;
+  box-shadow: 0 2px 7px #266fa005;
   transition: border-left-color .18s, transform .18s, box-shadow .18s;
 }
 .link-card:has(a.external-link)::after {
@@ -185,7 +185,7 @@ main { padding-block: 3.8rem 3rem; }
 }
 .link-card:hover {
   border-left-color: var(--yellow);
-  box-shadow: 0 6px 15px #2b7d9b0c;
+  box-shadow: 0 6px 15px #266fa00c;
 }
 .link-card p { margin: 0; }
 .link-card a {
