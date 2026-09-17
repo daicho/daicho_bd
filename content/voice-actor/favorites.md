@@ -24,6 +24,8 @@ FAVORITE VOICE ACTORS
 - mika
 - 岡田夢以
 - 高尾奏音
+- 春日さくら
+- 乾夏寧
 - 愛美
 - 工藤晴香
 - 中島由貴
@@ -63,4 +65,8 @@ FAVORITE VOICE ACTORS
 
 ::: link
 [好きなキャラクター](/character/favorites.md)
+:::
+
+::: link
+[好きなラジオ・配信番組](/show/favorites.md)
 :::

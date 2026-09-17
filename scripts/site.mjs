@@ -96,6 +96,7 @@ function createMarkdown(files) {
         if (child.type === "link_open" && isExternalLink(child.attrGet("href"))) {
           child.attrJoin("class", "external-link");
           child.attrSet("target", "_blank");
+          child.attrSet("rel", "noopener noreferrer");
         }
         if (child.type === "image") {
           child.attrSet("loading", "lazy");
