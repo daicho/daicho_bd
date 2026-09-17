@@ -31,8 +31,8 @@ body::before {
   height: 4px;
   background: linear-gradient(90deg, #62b9d4 0%, #b2e2ef 95%, var(--yellow) 95%);
 }
-a { color: var(--blue); text-underline-offset: .23em; }
-a:hover { text-decoration-thickness: 2px; }
+a { color: var(--blue); text-decoration: none; text-underline-offset: .23em; }
+a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
 a:focus-visible, summary:focus-visible {
   outline: 3px solid var(--blue);
   outline-offset: 5px;
@@ -186,7 +186,15 @@ main { padding-block: 3.8rem 3rem; }
 .link-card a:focus-visible { outline: none; }
 .link-card a:focus-visible::after { outline: 3px solid var(--blue); outline-offset: 3px; }
 .back-link { display: inline-block; margin-top: 2.5rem; font-size: .85rem; text-decoration: none; }
-.back-link span { margin-right: .6rem; }
+.back-link:hover { text-decoration: none; }
+.back-link::before {
+  content: "←";
+  display: inline-block;
+  margin-right: .4rem;
+  text-decoration: none;
+}
+.back-link-label { text-decoration: none; }
+.back-link:hover .back-link-label { text-decoration: underline; text-decoration-thickness: 1px; }
 .site-footer {
   text-align: center;
   padding-block: 1.5rem 2.2rem;

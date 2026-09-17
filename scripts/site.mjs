@@ -147,7 +147,7 @@ function renderPage({ title, body, url, config, notFound = false }) {
       <article class="prose${home ? " home" : ""}">
 ${body}
       </article>
-      ${home ? "" : '<a class="back-link" href="/"><span aria-hidden="true">←</span> トップに戻る</a>'}
+      ${home ? "" : '<a class="back-link" href="/"><span class="back-link-label">トップに戻る</span></a>'}
     </main>
     <footer class="site-footer">
       Copyright &copy; 2026 だいちょ
