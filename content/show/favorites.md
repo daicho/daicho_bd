@@ -10,3 +10,9 @@ FAVORITE RADIO & STREAMING SHOWS
 - 中澤ミナのゲームはじめたて
 - MyGO!!!!!の迷子集会
 - 洲崎西
+
+## Links
+
+::: link
+[好きな声優](/voice-actor/favorites.md)
+:::

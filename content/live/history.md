@@ -4,10 +4,6 @@ LIVE & EVENT HISTORY
 
 # ライブ・イベント参加歴
 
-バンドリを中心に、参加したライブ・イベントと今後の参加予定をまとめています。
-
-## 参加したライブ・イベント
-
 | 日付 | イベント | 会場 |
 | --- | --- | --- |
 | 2025/1/12 | MyGO!!!!!×トゲナシトゲアリ「Avoid Note」 | TOKYO DOME CITY HALL |
@@ -32,3 +28,9 @@ LIVE & EVENT HISTORY
 | 2026/8/9 | LuckyFes'26 DAY2 | 国営ひたち海浜公園 |
 | 2026/8/20 | RI PATHOS LIVE in TOKYO | Zepp Shinjuku |
 | 2026/8/29 | Roselia「Lehre der Rose」DAY1 | 有明アリーナ |
+
+## Links
+
+::: link
+[イベンターノート](https://www.eventernote.com/users/daicho)
+:::

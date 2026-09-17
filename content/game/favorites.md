@@ -10,3 +10,14 @@ FAVORITE GAMES
 - マリオカートWii
 - マリオカート8DX
 - Fish Eyes Ⅱ
+
+
+## Links
+
+::: link
+[アワーノーツについて](/ournotes/index.md)
+:::
+
+::: link
+[ガルパについて](/garupa/index.md)
+:::

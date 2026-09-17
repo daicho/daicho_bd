@@ -4,7 +4,8 @@ FAVORITE ANIME
 
 # 好きなアニメ
 
-なから好きな順に並んでます。でも、ここに挙げてる時点で全部大好きです。
+なから好きな順に並んでます。
+でも、ここに挙げてる時点で全部好きです。
 
 - BanG Dream! It's MyGO!!!!!
 - 神のみぞ知るセカイ
@@ -62,32 +63,12 @@ FAVORITE ANIME
 - ムシブギョー
 - ゆるキャン△
 
+## Links
+
 ::: link
 [アニメ視聴歴](history.md)
-視聴済みアニメの一覧。
 :::
 
 ::: link
-[好きなキャラクター](../character/favorites.md)
-好きなキャラクター。
-:::
-
-::: link
-[好きな声優](../voice-actor/favorites.md)
-好きな声優さん。
-:::
-
-::: link
-[好きな曲](../song/favorites.md)
-よく聴く曲。
-:::
-
-::: link
-[好きなラジオ・配信番組](../show/favorites.md)
-聴いているラジオと見ている配信番組。
-:::
-
-::: link
-[好きなゲーム](../game/index.md)
-遊んでいるゲーム。
+[好きなキャラクター](/character/favorites.md)
 :::

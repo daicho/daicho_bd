@@ -4,7 +4,7 @@ ANIME WATCH HISTORY
 
 # アニメ視聴歴
 
-これまでに視聴したアニメの一覧です。全399作品を掲載しています。
+これまでに視聴したアニメの一覧。
 
 - R-15
 - あいうら
@@ -405,3 +405,9 @@ ANIME WATCH HISTORY
 - One Room
 - One Room セカンドシーズン
 - One Room サードシーズン
+
+## Links
+
+::: link
+[好きなアニメ](favorites.md)
+:::
