@@ -61,7 +61,7 @@ function rewriteLink(href, source, files) {
 }
 
 function createMarkdown(files) {
-  const md = new MarkdownIt({ breaks: true, html: false, linkify: true, typographer: false });
+  const md = new MarkdownIt({ breaks: true, html: true, linkify: true, typographer: false });
   for (const name of ["link", "note"]) {
     md.use(container, name, {
       validate: (params) => params.trim() === name,
