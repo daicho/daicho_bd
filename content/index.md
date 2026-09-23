@@ -8,13 +8,8 @@ A LITTLE ABOUT ME
 
 ## ToDo
 
-- デプロイすると外部リンクアイコンが表示されない
-- 好きな曲一覧作成
-- 特筆すべき項目があれば個別ページ作成する
-- 好きなラジオ・配信番組 外部リンク
 - イベントの参加歴・予定作る
 - アワーノーツについて
-- ガルパについて
 - グッズ紹介
 - オタク年表
 - リンクカードにアイコン付ける
@@ -28,14 +23,14 @@ A LITTLE ABOUT ME
 バンドリのMyGO!!!!!が大好きです👊
 MyGO!!!!!を好きになって以来、ライブにもよく行くようになりました。
 
-アワーノーツに全てを捧げる予定です。
+アワーノーツに全てを捧げます。
 
 ## 特に好きなもの
 
 - [MyGO!!!!!](https://bang-dream.com/artist/mygo/)
 - [Morfonica](https://bang-dream.com/artist/morfonica/)
 - sumimi
-- [バンドリ！アワーノーツ](https://bang-dream-on.bushimo.jp/)
+- [バンドリ！アワーノーツ](#アワーノーツについて)
 - [はなまきこもちぃ](https://hanakomo.secondshot.jp/)
 
 ## 好きなものまとめ
@@ -86,11 +81,11 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 
 ※まだ当たっていないものも含まれます。当たれ！
 
+## アワーノーツについて
+
 ## 私について
 
 - [ライブ・イベント参加歴](live/history.md)
-- [アワーノーツについて](ournotes/index.md)
-- [ガルパについて](garupa/index.md)
 - [グッズ紹介](me/goods.md)
 - [オタク年表](me/otaku-timeline.md)
 - [アニメ視聴歴](anime/history.md)
@@ -127,12 +122,20 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 :::
 
 ::: link
+[YouTube](https://www.youtube.com/@%E3%81%A0%E3%81%84%E3%81%A1%E3%82%87-bd)
+@だいちょ-bd
+アワーノーツのプレイ動画とか上げるかも？
+:::
+
+::: link
 [イベンターノート](https://www.eventernote.com/users/daicho)
+@daicho
 イベンターノートって神サービスですよね。
 :::
 
 ::: link
 [AtCoder](https://atcoder.jp/users/daicho)
+@daicho
 日々衰えを感じながらもがいています。
 :::
 
