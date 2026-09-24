@@ -10,7 +10,7 @@ Markdownからプロフィール・リンクサイトの静的HTMLを生成し�
 
 1. このリポジトリをフォークします。
 2. `site.config.mjs` の `name`、`description`、`url`、`copyright` を自分用に設定します。
-3. `content/` フォルダの内容を削除または自分の内容に置き換えます。
+3. `content/` の内容を削除または自分の内容に置き換えます。
 4. サイト全体の見た目は `theme/style.css` で調整します。
 5. HTMLテンプレートなど細かい設定は `scripts/site.mjs` で変更します。
 6. 「Firebase / GitHub の初回設定」に従い、自分のFirebaseプロジェクトを接続して公開します。
@@ -171,6 +171,6 @@ dist/                   生成された公開ファイル（Git管理外）
 
 ## ライセンス
 
-`content/` は Copyright © 2026 daicho, **All rights reserved**（CC0対象外）です。それ以外のこのリポジトリの作者が権利を持つ部分には CC0 1.0 Universal が適用されます。依存ライブラリ等の第三者の権利はそれぞれのライセンスに従います。
+`content/` の内容についてはすべての権利をだいちょが保有します。それ以外の部分については CC0 1.0 が適用されます。
 
 詳細は `LICENSE` を参照してください。
