@@ -1,17 +1,17 @@
 # Markdown profile & link site
 
 Markdownからプロフィール・リンクサイトの静的HTMLを生成し、GitHub ActionsからFirebase Hostingへ公開するリポジトリです。
-自分のサイトを作る場合は、**フォーク後に個人情報・テーマ・Firebaseの接続先を自分用に変更**してください。
+
+自分のサイトを作る場合は、**フォーク後に個人情報・Firebaseの接続先を自分用に変更**してください。
 
 ## フォークして自分のサイトを公開する
 
-1. GitHubでこのリポジトリを **Fork** し、フォーク先を自分のPCにクローンします。以降の編集・Secret設定・pushは、元のリポジトリではなく自分のフォークで行います。
-2. `content/` の元の作者のプロフィール、リンク、画像、各ページを削除または自分の内容に置き換えます。`content/index.md` は必須です。`content/about.md` のライセンス説明も、残す場合は自分の公開方針に合わせて書き換えてください。公開前に個人情報や元の作者へのリンクが残っていないか確認します。
-3. `theme/` 内のCSS・SVG（faviconなど）はこのリポジトリでは **All rights reserved** です。自分で使用する許可がない場合は、`theme/style.css`、`theme/favicon.svg`、`theme/external-link.svg` を自作または利用可能な素材に置き換えてから公開してください。これらのファイル名は生成処理・CSSから参照されます。配色を変える場合は `scripts/site.mjs` の `theme-color` も確認してください。
-4. `site.config.mjs` の `name`、`description`、`url`（後述の自分のHostingのURL。独自ドメインを使う場合はそのURL）を設定します。`scripts/site.mjs` のフッターにある元の作者名・年も自分用に変更します。READMEやサイトの説明文に残る元のサイト向けの記述も見直します。
-5. 次の「Firebase / GitHub の初回設定」に従い、**自分のFirebaseプロジェクト**を接続して公開します。元の `daicho-bd` プロジェクトや認証情報は使用できません。
+1. このリポジトリをフォークします。
+2. `content/` フォルダの内容を削除または自分の内容に置き換えます。
+4. `site.config.mjs` の `name`、`description`、`url` を設定します。`scripts/site.mjs` のフッターにある元の作者名・年も自分用に変更します。READMEやサイトの説明文に残る元のサイト向けの記述も見直します。
+5. 次の「Firebase / GitHub の初回設定」に従い、**自分のFirebaseプロジェクト**を接続して公開します。
 
-`LICENSE` のCC0は `content/` と `theme/` には適用されません。フォークによって元の作者のコンテンツやテーマが自由に再利用できるようになるわけではありません。自分の素材に置き換えた後の権利表記は、各素材の権利に合わせて決めてください。
+`LICENSE` のCC0は `content/` には適用されません。元の作者のプロフィールや画像などのコンテンツは自分のものに置き換えてください。`theme/` とその他の作者保有部分はCC0 1.0で利用できます。自分が追加した素材の権利表記は、自分の公開方針や各素材の権利に合わせて決めてください。
 
 ## ローカルで表示する
 
@@ -161,7 +161,7 @@ Firebase公式CLIの `firebase init hosting:github --project <your-project-id>` 
 
 ### pushで公開
 
-フォークのActionsが有効になっていることとSecretの設定を確認し、変更をコミットしてフォークの `main` にpushします。**元のコンテンツ・テーマを置き換え終えてから**pushしてください。Secretが未設定のままpushするとビルドは成功してもデプロイは失敗します。
+フォークのActionsが有効になっていることとSecretの設定を確認し、変更をコミットしてフォークの `main` にpushします。**元のコンテンツを置き換え終えてから**pushしてください。Secretが未設定のままpushするとビルドは成功してもデプロイは失敗します。
 
 ```powershell
 git add .
@@ -194,4 +194,4 @@ dist/                   生成された公開ファイル（Git管理外）
 
 ## ライセンス
 
-`content/` と `theme/` は Copyright © 2026 daicho, **All rights reserved**（CC0対象外）です。それ以外の、このリポジトリの作者が権利を持つ部分には [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/deed.ja) が適用されます。詳細は `LICENSE` を参照してください。依存ライブラリ等の第三者の権利はそれぞれのライセンスに従います。
+`content/` は Copyright © 2026 daicho, **All rights reserved**（CC0対象外）です。`theme/` を含む、それ以外のこのリポジトリの作者が権利を持つ部分には [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/deed.ja) が適用されます。詳細は `LICENSE` を参照してください。依存ライブラリ等の第三者の権利はそれぞれのライセンスに従います。

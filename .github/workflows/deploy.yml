@@ -46,15 +46,15 @@ jobs:
           path: dist
       - name: Check deploy credentials
         env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAICHO_BD }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
-            echo "::error::Set the FIREBASE_SERVICE_ACCOUNT_DAICHO_BD repository secret. See README.md."
+            echo "::error::Set the FIREBASE_SERVICE_ACCOUNT repository secret. See README.md."
             exit 1
           fi
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAICHO_BD }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: daicho-bd
           channelId: live
           firebaseToolsVersion: 15.30.1
