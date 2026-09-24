@@ -22,6 +22,7 @@ FAVORITE VOICE ACTORS
 - 涼泉桜花
 - 橘めい
 - mika
+- 花守ゆみり
 - 岡田夢以
 - 高尾奏音
 - 春日さくら
