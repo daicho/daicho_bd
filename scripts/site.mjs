@@ -129,13 +129,11 @@ function renderPage({ title, body, url, config, notFound = false }) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#e9f5fd">
   <title>${escapeHtml(documentTitle)}</title>
-  <meta name="description" content="${escapeHtml(config.description)}">
   ${notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${escapeHtml(canonical)}">`}
   <meta property="og:type" content="website">
   <meta property="og:locale" content="${escapeHtml(config.language === "ja" ? "ja_JP" : config.language)}">
   <meta property="og:site_name" content="${escapeHtml(config.name)}">
   <meta property="og:title" content="${escapeHtml(documentTitle)}">
-  <meta property="og:description" content="${escapeHtml(config.description)}">
   <meta property="og:url" content="${escapeHtml(canonical)}">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="/_site/favicon.svg" type="image/svg+xml">
