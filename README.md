@@ -2,6 +2,8 @@
 
 Markdownからプロフィール・リンクサイトの静的HTMLを生成し、GitHub ActionsからFirebase Hostingへ公開するリポジトリです。
 
+**公開先**: https://daicho-bd.web.app/
+
 自分のサイトを作る場合は、**フォーク後に個人情報・Firebaseの接続先を自分用に変更**してください。
 
 ## フォークして自分のサイトを公開する
