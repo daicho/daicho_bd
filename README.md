@@ -8,8 +8,8 @@ Markdownからプロフィール・リンクサイトの静的HTMLを生成し�
 
 1. このリポジトリをフォークします。
 2. `content/` フォルダの内容を削除または自分の内容に置き換えます。
-4. `site.config.mjs` の `name`、`description`、`url` を設定します。`scripts/site.mjs` のフッターにある元の作者名・年も自分用に変更します。READMEやサイトの説明文に残る元のサイト向けの記述も見直します。
-5. 次の「Firebase / GitHub の初回設定」に従い、**自分のFirebaseプロジェクト**を接続して公開します。
+3. `site.config.mjs` の `name`、`description`、`url`、`copyright`（フッターの表示文言）を自分用に設定します。READMEやサイトの説明文に残る元のサイト向けの記述も見直します。
+4. 次の「Firebase / GitHub の初回設定」に従い、**自分のFirebaseプロジェクト**を接続して公開します。
 
 `LICENSE` のCC0は `content/` には適用されません。元の作者のプロフィールや画像などのコンテンツは自分のものに置き換えてください。`theme/` とその他の作者保有部分はCC0 1.0で利用できます。自分が追加した素材の権利表記は、自分の公開方針や各素材の権利に合わせて決めてください。
 
@@ -129,7 +129,7 @@ HTMLの直接埋め込みは無効です。装飾はMarkdownとコンテナー�
 ## Firebase / GitHub の初回設定
 
 1. [Firebase Console](https://console.firebase.google.com/) で自分のFirebaseプロジェクトを作成し、**Hosting** を有効にします。FirebaseプロジェクトIDを控えます（以下では `<your-project-id>` と表記）。
-2. フォーク内の `.firebaserc` の `projects.default`、`.github/workflows/deploy.yml` の `projectId`、`package.json` の `scripts.deploy` の `--project` を、すべて `<your-project-id>` に変更します。元の値 `daicho-bd` のままにしないでください。`firebase.json` は公開先ディレクトリ `dist` などのHosting設定で、通常は変更不要です。
+2. フォーク内の `.firebaserc` の `projects.default` を `<your-project-id>` に変更します。手動デプロイもGitHub Actionsもこの値を使用するため、元の値 `daicho-bd` のままにしないでください。`firebase.json` は公開先ディレクトリ `dist` などのHosting設定で、通常は変更不要です。
 3. `site.config.mjs` の `url` を `https://<your-project-id>.web.app`（または自分の独自ドメイン）に設定します。独自ドメインはFirebase Hosting側でも接続してください。
 4. 以下の手順でGitHub Actions用の認証Secretを設定します。GitHubのフォークでは、元のリポジトリのSecretは引き継がれません。
 
@@ -185,7 +185,7 @@ Firebaseの設定はSPA用の全URL書き換えをせず、各ページのHTML�
 content/                編集するMarkdown・画像
 theme/                  共通CSS・favicon
 scripts/                静的HTML生成・ローカルプレビュー
-site.config.mjs         表示名・説明・公開URL
+site.config.mjs         表示名・説明・公開URL・フッターの著作権表示
 firebase.json           Hosting設定
 .firebaserc             FirebaseプロジェクトID
 .github/workflows/      push時の自動ビルド・デプロイ

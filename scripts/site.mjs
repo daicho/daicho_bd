@@ -157,7 +157,7 @@ ${body}
       ${home ? "" : '<a class="back-link" href="/"><span class="back-link-label">トップに戻る</span></a>'}
     </main>
     <footer class="site-footer">
-      Copyright &copy; 2026 だいちょ
+      ${escapeHtml(config.copyright)}
     </footer>
   </div>
 </body>

@@ -11,7 +11,7 @@
     "build": "node scripts/build.mjs",
     "dev": "node scripts/preview.mjs",
     "preview": "node scripts/preview.mjs",
-    "deploy": "npm run build && firebase deploy --only hosting --project daicho-bd"
+    "deploy": "npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "markdown-it": "^14.1.0",
