@@ -1,19 +1,21 @@
-# daicho — Markdown link site
+# Markdown profile & link site
 
-Markdownを書いて `main` にpushすると、HTMLに変換されてFirebase Hostingに公開される個人用リンクサイトです。
-MyGO!!!!!をイメージした爽やかな水色、余白のあるシンプルなレイアウト、少量の黄色を使っています。公式のロゴ・画像・歌詞は使用していません。
+Markdownからプロフィール・リンクサイトの静的HTMLを生成し、GitHub ActionsからFirebase Hostingへ公開するリポジトリです。
+自分のサイトを作る場合は、**フォーク後に個人情報・テーマ・Firebaseの接続先を自分用に変更**してください。
 
-**公開先（初回デプロイ後）:** https://daicho-bd.web.app
+## フォークして自分のサイトを公開する
 
-## 最初にすること
+1. GitHubでこのリポジトリを **Fork** し、フォーク先を自分のPCにクローンします。以降の編集・Secret設定・pushは、元のリポジトリではなく自分のフォークで行います。
+2. `content/` の元の作者のプロフィール、リンク、画像、各ページを削除または自分の内容に置き換えます。`content/index.md` は必須です。`content/about.md` のライセンス説明も、残す場合は自分の公開方針に合わせて書き換えてください。公開前に個人情報や元の作者へのリンクが残っていないか確認します。
+3. `theme/` 内のCSS・SVG（faviconなど）はこのリポジトリでは **All rights reserved** です。自分で使用する許可がない場合は、`theme/style.css`、`theme/favicon.svg`、`theme/external-link.svg` を自作または利用可能な素材に置き換えてから公開してください。これらのファイル名は生成処理・CSSから参照されます。配色を変える場合は `scripts/site.mjs` の `theme-color` も確認してください。
+4. `site.config.mjs` の `name`、`description`、`url`（後述の自分のHostingのURL。独自ドメインを使う場合はそのURL）を設定します。`scripts/site.mjs` のフッターにある元の作者名・年も自分用に変更します。READMEやサイトの説明文に残る元のサイト向けの記述も見直します。
+5. 次の「Firebase / GitHub の初回設定」に従い、**自分のFirebaseプロジェクト**を接続して公開します。元の `daicho-bd` プロジェクトや認証情報は使用できません。
 
-1. `content/index.md` の `https://x.com/your_handle` を自分のXのURLに変更します。プロフィール文章もサンプルなので自由に編集してください。
-2. `site.config.mjs` の表示名・サイト説明を編集します。独自ドメインに変更する場合は `url` も変更してください。フッターには `Copyright © 2026 daicho` を中央に表示します。
-3. 下記の「Firebase / GitHub の初回設定」を一度だけ行います。
+`LICENSE` のCC0は `content/` と `theme/` には適用されません。フォークによって元の作者のコンテンツやテーマが自由に再利用できるようになるわけではありません。自分の素材に置き換えた後の権利表記は、各素材の権利に合わせて決めてください。
 
 ## ローカルで表示する
 
-Node.js 22以上（GitHub Actionsは24）を使用します。
+Node.js 22以上（GitHub Actionsは24）を使用します。フォークしたリポジトリのルートで実行してください。
 
 ```powershell
 npm ci
@@ -126,41 +128,45 @@ HTMLの直接埋め込みは無効です。装飾はMarkdownとコンテナー�
 
 ## Firebase / GitHub の初回設定
 
-Firebaseプロジェクト `daicho-bd` を使用する設定済みです。
-Firebase Consoleの **Hosting** でデフォルトサイトが利用可能なことを確認してください。
-認証情報は同梱していないため、初回公開には以下の準備が必要です。
+1. [Firebase Console](https://console.firebase.google.com/) で自分のFirebaseプロジェクトを作成し、**Hosting** を有効にします。FirebaseプロジェクトIDを控えます（以下では `<your-project-id>` と表記）。
+2. フォーク内の `.firebaserc` の `projects.default`、`.github/workflows/deploy.yml` の `projectId`、`package.json` の `scripts.deploy` の `--project` を、すべて `<your-project-id>` に変更します。元の値 `daicho-bd` のままにしないでください。`firebase.json` は公開先ディレクトリ `dist` などのHosting設定で、通常は変更不要です。
+3. `site.config.mjs` の `url` を `https://<your-project-id>.web.app`（または自分の独自ドメイン）に設定します。独自ドメインはFirebase Hosting側でも接続してください。
+4. 以下の手順でGitHub Actions用の認証Secretを設定します。GitHubのフォークでは、元のリポジトリのSecretは引き継がれません。
 
 ### ローカルから手動で公開
 
+Firebase CLIでログイン後、フォーク内で実行します。
+
 ```powershell
+npm ci
 firebase login
 npm run deploy
 ```
 
-これでビルドして `daicho-bd` のHostingだけをデプロイします。Firestoreなどは変更しません。
+Firebase CLIが未インストールの場合は `npm install -g firebase-tools` で導入してください。これでビルドして設定したプロジェクトのHostingだけをデプロイします。Firestoreなどは変更しません。手動デプロイだけを使う場合、GitHub Actions用のSecretは不要です。
 
 ### GitHub Actionsの認証を設定
 
-既存の `.github/workflows/deploy.yml` は、リポジトリSecret **`FIREBASE_SERVICE_ACCOUNT_DAICHO_BD`** を参照します。
+既存の `.github/workflows/deploy.yml` は、リポジトリSecret **`FIREBASE_SERVICE_ACCOUNT_DAICHO_BD`** を参照します。フォークでもこの名前のまま使えます（名前を変える場合はワークフロー内の参照・エラーメッセージも合わせて変更してください）。
 
-1. [Google Cloudのサービスアカウント画面](https://console.cloud.google.com/iam-admin/serviceaccounts?project=daicho-bd) で、`daicho-bd` にHostingデプロイ専用のサービスアカウントを作成します。プロジェクトへのロールは **Firebase Hosting Admin** (`roles/firebasehosting.admin`) と **API Keys Viewer** (`roles/serviceusage.apiKeysViewer`) を付与します。本サイトは本番Hostingのみを使うため、Firebase AuthenticationやCloud Runの管理権限は不要です。
+1. [Google Cloudのサービスアカウント画面](https://console.cloud.google.com/iam-admin/serviceaccounts) で、**自分のプロジェクト**にHostingデプロイ専用のサービスアカウントを作成します。プロジェクトへのロールは **Firebase Hosting Admin** (`roles/firebasehosting.admin`) と **API Keys Viewer** (`roles/serviceusage.apiKeysViewer`) を付与します。本サイトは本番Hostingのみを使うため、Firebase AuthenticationやCloud Runの管理権限は不要です。
 2. 作成したサービスアカウントの「キー」からJSONキーを発行します。キーはリポジトリ外に保存し、内容をチャット・Markdown・ソースコードに貼らないでください。
-3. [このリポジトリのActions Secrets](https://github.com/daicho/daicho_bd/settings/secrets/actions) で **New repository secret** を開き、Nameを `FIREBASE_SERVICE_ACCOUNT_DAICHO_BD`、SecretをJSONファイルの内容全体にして保存します。設定後、不要なローカルのキーのコピーは削除してください。
+3. **自分のフォーク**の Settings → Secrets and variables → Actions で **New repository secret** を開き、Nameを `FIREBASE_SERVICE_ACCOUNT_DAICHO_BD`、SecretをJSONファイルの内容全体にして保存します。設定後、不要なローカルのキーのコピーは削除してください。
 
 組織ポリシーでJSONキーの発行が禁止されている場合は、管理者に確認してください。キーをGitに含める方法で回避しないでください。
 
-Firebase公式CLIの `firebase init hosting:github --project daicho-bd` でサービスアカウントとSecretを自動作成する方法もあります。ただし追加ワークフローが生成されるため、二重デプロイを避けるには既存の `deploy.yml` に一本化し、参照するSecret名を一致させてください。通常のセットアップでは上記の手動Secret設定だけで十分です。
+Firebase公式CLIの `firebase init hosting:github --project <your-project-id>` でサービスアカウントとSecretを自動作成する方法もあります。ただし追加ワークフローが生成されるため、二重デプロイを避けるには既存の `deploy.yml` に一本化し、参照するSecret名を一致させてください。通常のセットアップでは上記の手動Secret設定だけで十分です。
 
 参考: [Firebase公式のGitHub連携](https://firebase.google.com/docs/hosting/github-integration)、[公式Actionのサービスアカウント設定](https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/docs/service-account.md)。
 
 ### pushで公開
 
-Secret設定後、変更をコミットして `main` にpushします。
+フォークのActionsが有効になっていることとSecretの設定を確認し、変更をコミットしてフォークの `main` にpushします。**元のコンテンツ・テーマを置き換え終えてから**pushしてください。Secretが未設定のままpushするとビルドは成功してもデプロイは失敗します。
 
 ```powershell
 git add .
-git commit -m "Set up Markdown link site"
-git push -u origin main
+git commit -m "Customize my site"
+git push origin main
 ```
 
 以降はMarkdownの変更をpushするだけです。
@@ -169,7 +175,7 @@ git push -u origin main
 - **`main`向けPull Request:** HTML生成のみ。認証情報は使わず、本番にもプレビューにもデプロイしません。
 - **Actionsから手動実行:** `main` を選ぶと本番公開できます。他のブランチはビルドのみです。
 
-[Actions画面](https://github.com/daicho/daicho_bd/actions) で結果を確認できます。認証Secretが未設定なら、デプロイ工程が明示的に失敗します。ビルドが失敗した場合も、既存の公開サイトは更新されません。
+フォークの **Actions** 画面で結果を確認し、`https://<your-project-id>.web.app` にアクセスしてください。認証Secretが未設定なら、デプロイ工程が明示的に失敗します。ビルドが失敗した場合も、既存の公開サイトは更新されません。
 
 Firebaseの設定はSPA用の全URL書き換えをせず、各ページのHTMLを配信します。存在しないページは、トップへのリンクを付けた404ページになります。
 
@@ -185,3 +191,7 @@ firebase.json           Hosting設定
 .github/workflows/      push時の自動ビルド・デプロイ
 dist/                   生成された公開ファイル（Git管理外）
 ```
+
+## ライセンス
+
+`content/` と `theme/` は Copyright © 2026 daicho, **All rights reserved**（CC0対象外）です。それ以外の、このリポジトリの作者が権利を持つ部分には [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/deed.ja) が適用されます。詳細は `LICENSE` を参照してください。依存ライブラリ等の第三者の権利はそれぞれのライセンスに従います。

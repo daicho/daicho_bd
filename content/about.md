@@ -17,6 +17,6 @@ ABOUT THIS SITE
 
 ## ライセンス
 
-サイトの**コンテンツ内容を除く部分**は [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja) です。ソースコード、テーマ、ビルドやデプロイの仕組みは、自由に複製・改変して使ってもらって構いません。
+`content/` と `theme/` は Copyright © 2026 daicho, **All rights reserved** で、CC0の対象外です。それ以外の、作者が権利を持つ部分には [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/deed.ja) が適用されます。
 
-プロフィールや各ページに記載している文章・一覧などのコンテンツは、CC0の対象外です。
+フォークして自分のサイトを作る場合は、元のプロフィールや画像、CSS・SVGを自分のものや利用許諾のある素材に置き換えてください。手順は[リポジトリのREADME](https://github.com/daicho/daicho_bd#readme)を参照してください。

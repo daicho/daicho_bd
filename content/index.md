@@ -11,8 +11,8 @@ A LITTLE ABOUT ME
 
 - アワーノーツについて
 - オタク年表
-- グッズ紹介（リンク追加も）
 - このサイトについて
+- グッズ紹介（リンク追加も）
 - リンクカードにアイコン付ける
 - 自分のアイコン
 - SEO
@@ -34,15 +34,6 @@ MyGO!!!!!を好きになって以来、ライブにもよく行くようにな�
 - sumimi
 - [バンドリ！アワーノーツ](#アワーノーツについて)
 - [はなまきこもちぃ](https://hanakomo.secondshot.jp/)
-
-## 好きなものまとめ
-
-- [好きなアニメ](anime/favorites.md)
-- [好きなキャラクター](character/favorites.md)
-- [好きな声優](voice-actor/favorites.md)
-- [好きな曲](song/favorites.md)
-- [好きなラジオ・配信番組](show/favorites.md)
-- [好きなゲーム](game/favorites.md)
 
 ## スタンス
 
@@ -86,6 +77,17 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 ※まだ当たっていないものも含まれます。当たれ！
 
 ## アワーノーツについて
+
+
+
+## 好きなものまとめ
+
+- [好きなアニメ](anime/favorites.md)
+- [好きなキャラクター](character/favorites.md)
+- [好きな声優](voice-actor/favorites.md)
+- [好きな曲](song/favorites.md)
+- [好きなラジオ・配信番組](show/favorites.md)
+- [好きなゲーム](game/favorites.md)
 
 ## 私について
 
