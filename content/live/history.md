@@ -56,6 +56,7 @@ LIVE & EVENT HISTORY
 | 2026/9/13 | HAKOSANA vol.1 | 築地本願寺ブディストホール |
 | 2026/9/19〜20 | ナガノアニエラフェスタ2026 | 駒場公園 |
 | 2026/9/22 | Morfonica LIVE「Movement」 | TACHIKAWA STAGE GARDEN |
+| 2026/9/25 | 夢限大みゅーたいぷ「新宿着陸計画」DAY2 | Zepp Shinjuku |
 
 ## Links
 
