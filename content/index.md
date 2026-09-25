@@ -65,7 +65,9 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 | 2026/10/25 | Bushiroad Fashion Journey | Shibuya Hikarie |
 | 2026/11/3 | ガールズバンドクライ Special LIVE “赤色の響祭” | ぴあアリーナMM |
 | 2026/11/14〜15 | MyGO!!!!! 9th LIVE「つなぎ目の向こうに」 - 神戸再景編 - | ワールド記念ホール |
+| 2026/12/12 | 朗読劇「綴結」 | 六行会ホール |
 | 2026/12/12 | 一家Dumb Rock! 1st GIG「ピース＆グルーヴ」 | duo MUSIC EXCHANGE |
+| 2026/12/13 | 夏さくプレゼンツ 春日さくら バースデーイベント2026 | 星陵会館 |
 | 2026/12/25 | millsage LIVE 001「極夜」 | Spotify O-WEST |
 | 2027/1/8 | ブシロード新春大発表会2027 | Kanadevia Hall |
 | 2027/1/9 | Morfonica LIVE「eleganza」 | Kanadevia Hall |
