@@ -127,7 +127,6 @@ function renderPage({ title, body, url, config, notFound = false }) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e9f5fd">
   <title>${escapeHtml(documentTitle)}</title>
   ${notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${escapeHtml(canonical)}">`}
   <meta property="og:type" content="website">
