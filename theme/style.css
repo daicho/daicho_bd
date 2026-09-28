@@ -153,13 +153,14 @@ main { padding-block: 3.8rem 3rem; }
 .prose td { text-align: left; }
 .note {
   margin-block: 1.5rem;
-  padding: .2rem 1.1rem;
+  padding: 0.8rem 1.1rem;
   border-left: 2px solid #64a6d2;
   background: #ffffff70;
   border-radius: 0 10px 10px 0;
   color: var(--muted);
   font-size: .85rem;
 }
+.note p { margin: 0; }
 .link-card {
   position: relative;
   margin-block: .8rem;
