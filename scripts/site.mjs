@@ -189,6 +189,10 @@ ${hasTweets ? '  <script async src="https://platform.twitter.com/widgets.js" cha
 }
 
 export async function buildSite({ root, config }) {
+  const siteUrl = new URL(config.url);
+  if (!["http:", "https:"].includes(siteUrl.protocol) || siteUrl.username || siteUrl.password) {
+    throw new Error("site.config.mjs: url must be an absolute HTTP(S) URL without credentials.");
+  }
   const contentDir = path.join(root, "content");
   const outputDir = path.join(root, "dist");
   const files = new Set(await listFiles(contentDir));
@@ -205,6 +209,8 @@ export async function buildSite({ root, config }) {
     outputs.set(key, source);
   };
   claim("404.html", "generated 404");
+  claim("sitemap.xml", "generated sitemap");
+  claim("robots.txt", "generated robots");
   claim("_site", "theme assets");
   for (const file of files) {
     const output = /\.md$/i.test(file)
@@ -228,6 +234,16 @@ export async function buildSite({ root, config }) {
       }),
     });
   }
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages.map((source) => `  <url><loc>${escapeHtml(new URL(pageUrl(source), siteUrl).href)}</loc></url>`).join("\n")}
+</urlset>
+`;
+  const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${new URL("/sitemap.xml", siteUrl).href}
+`;
   // Validate every page before replacing the previous successful build.
   await rm(outputDir, { recursive: true, force: true });
   await mkdir(outputDir, { recursive: true });
@@ -250,5 +266,7 @@ export async function buildSite({ root, config }) {
     config,
     notFound: true,
   }));
+  await writeFile(path.join(outputDir, "sitemap.xml"), sitemap);
+  await writeFile(path.join(outputDir, "robots.txt"), robots);
   return pages;
 }
