@@ -250,6 +250,12 @@ ${body}
       ${home ? "" : '<a class="back-link" href="/"><span class="back-link-label">トップに戻る</span></a>'}
     </main>
     <footer class="site-footer">
+      <nav aria-label="サイト情報">
+        <ul class="footer-links">
+          <li><a href="/privacy/">プライバシーポリシー</a></li>
+          <li><a href="/about/">このサイトについて</a></li>
+        </ul>
+      </nav>
       ${escapeHtml(config.copyright)}
     </footer>
   </div>

@@ -223,6 +223,16 @@ main { padding-block: 3.8rem 3rem; }
   color: var(--muted);
   font-size: .7rem;
 }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0 0 .75rem;
+  padding: 0;
+  list-style: none;
+  font-size: .75rem;
+}
+.footer-links a { white-space: nowrap; }
 @media (max-width: 480px) {
   .site-shell { width: calc(100% - 2.5rem); }
   .site-header { padding-block: 1.5rem; }
