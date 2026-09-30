@@ -21,10 +21,12 @@ const updatedDateFormatter = new Intl.DateTimeFormat("en-GB", {
 });
 
 async function pageUpdates(root, pages) {
+  // ファイル名を Git のパターンとして解釈させず、更新日時をコミット履歴から取得する
   const runGit = (args) => execFileAsync("git", ["--literal-pathspecs", "-C", root, ...args], {
     env: { ...process.env, LC_ALL: "C" },
   });
   const updates = new Map();
+  // Git が使えない環境やコミットのないリポジトリでは更新日時を付けない
   try {
     await runGit(["rev-parse", "--show-toplevel"]);
   } catch (error) {
@@ -42,6 +44,7 @@ async function pageUpdates(root, pages) {
     throw error;
   }
   for (const source of pages) {
+    // 改名前の履歴も追跡し、表示用の日時だけ日本時間へ変換する
     const { stdout } = await runGit(["log", "-1", "--follow", "--format=%cI", "--", `content/${source}`]);
     const timestamp = stdout.trim();
     if (!timestamp) continue;
@@ -60,6 +63,7 @@ async function pageUpdates(root, pages) {
 }
 
 export function pageUrl(file) {
+  // index.md は親ディレクトリの URL に、それ以外は拡張子なしのディレクトリ URL にする
   const stem = file.replace(/\.md$/i, "");
   const route = stem === "index" ? "" : stem.replace(/\/index$/, "");
   return route ? `/${encodePath(route)}/` : "/";
@@ -70,6 +74,7 @@ async function listFiles(directory, prefix = "") {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (entry.name.startsWith(".")) continue;
     const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+    // content の外部を参照する可能性があるシンボリックリンクは扱わない
     if (entry.isSymbolicLink()) throw new Error(`Symbolic links are not supported: ${relative}`);
     if (entry.isDirectory()) {
       files.push(...await listFiles(path.join(directory, entry.name), relative));
@@ -81,6 +86,7 @@ async function listFiles(directory, prefix = "") {
 }
 
 function rewriteLink(href, source, files) {
+  // 外部 URL やページ内参照は維持し、ローカル参照だけ存在確認と公開 URL への変換を行う
   if (!href || /^(?:[a-z][a-z\d+.-]*:|\/\/|#|\?)/i.test(href)) return href;
   const [, encoded, suffix] = href.match(/^([^?#]*)(.*)$/);
   let decoded;
@@ -90,6 +96,7 @@ function rewriteLink(href, source, files) {
     throw new Error(`${source}: Invalid URL encoding in "${href}"`);
   }
   if (decoded.includes("\\")) throw new Error(`${source}: Use "/" in Markdown URLs: ${href}`);
+  // Markdown のパスは実行環境に関係なくスラッシュ区切りで解決する
   const target = path.posix.normalize(
     decoded.startsWith("/") ? decoded.slice(1) : path.posix.join(path.posix.dirname(source), decoded),
   );
@@ -125,6 +132,7 @@ function createMarkdown(files) {
       : "</div>\n",
   });
   md.use(container, "tweet", { validate: (params) => params.trim() === "tweet" });
+  // tweet ブロックは投稿 URL 一つだけを許可し、埋め込み用 HTML に置き換える
   md.core.ruler.push("site-tweets", (state) => {
     for (let index = 0; index < state.tokens.length; index++) {
       const token = state.tokens[index];
@@ -158,6 +166,7 @@ function createMarkdown(files) {
         const base = text.toLowerCase().replace(/[^\p{L}\p{N}\s_-]/gu, "").trim().replace(/\s+/g, "-") || "section";
         let id = base;
         let count = 2;
+        // 同じ見出しが複数あってもページ内リンクの ID が重複しないよう連番を付ける
         while (usedIds.has(id)) id = `${base}-${count++}`;
         usedIds.add(id);
         token.attrSet("id", id);
@@ -176,6 +185,7 @@ function createMarkdown(files) {
           child.attrSet("loading", "lazy");
           child.attrSet("decoding", "async");
         }
+        // インライン要素内のリンクや画像も処理対象にする
         child.children?.forEach(visit);
       };
       visit(token);
@@ -185,6 +195,7 @@ function createMarkdown(files) {
 }
 
 function inlineText(token) {
+  // 装飾のマークアップを除き、画像の代替テキストと改行を含む見出しの文字列を取り出す
   return (token?.children ?? []).map((child) => {
     if (child.type === "image") return child.content;
     if (child.type === "softbreak" || child.type === "hardbreak") return " ";
@@ -193,6 +204,7 @@ function inlineText(token) {
 }
 
 function renderPage({ title, body, url, config, notFound = false, hasTweets = false, updated }) {
+  // 共通レイアウトにページ情報を埋め込み、404 は検索対象から外す
   const home = url === "/";
   const documentTitle = home ? `${config.name}` : `${title} | ${config.name}`;
   const canonical = new URL(url, config.url).href;
@@ -249,6 +261,7 @@ export async function buildSite({ root, config }) {
   const pages = [...files].filter((file) => /\.md$/i.test(file));
   const outputs = new Map();
   const claim = (output, source) => {
+    // 大文字と小文字の違いやファイルとディレクトリの競合も出力先の衝突として検出する
     const key = output.toLowerCase();
     for (const [existing, owner] of outputs) {
       if (key === existing || key.startsWith(`${existing}/`) || existing.startsWith(`${key}/`)) {
@@ -273,6 +286,7 @@ export async function buildSite({ root, config }) {
   for (const source of pages) {
     const env = { source };
     const tokens = md.parse(await readFile(path.join(contentDir, source), "utf8"), env);
+    // 最初の H1 をページタイトルとして使い、見出しのないページはビルドエラーにする
     const headingIndex = tokens.findIndex((token) => token.type === "heading_open" && token.tag === "h1");
     if (headingIndex < 0) throw new Error(`${source}: Add a "# Page title" heading.`);
     const title = inlineText(tokens[headingIndex + 1]);
@@ -298,7 +312,7 @@ Allow: /
 
 Sitemap: ${new URL("/sitemap.xml", siteUrl).href}
 `;
-  // Validate every page before replacing the previous successful build.
+  // 全ページの検証とレンダリングが成功してから前回のビルド結果を置き換える
   await rm(outputDir, { recursive: true, force: true });
   await mkdir(outputDir, { recursive: true });
   await cp(path.join(root, "theme"), path.join(outputDir, "_site"), { recursive: true });

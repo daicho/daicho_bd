@@ -21,10 +21,12 @@ const types = {
 };
 
 function notifyReload() {
+  // 接続中のブラウザーへ SSE で再読み込みを通知する
   for (const response of reloadClients) response.write("data: reload\n\n");
 }
 
 async function rebuild(change) {
+  // import のキャッシュを避けて設定とビルド処理の変更も取り込む
   const cacheBust = `?v=${Date.now()}`;
   const [{ default: config }, { buildSite }] = await Promise.all([
     import(`../site.config.mjs${cacheBust}`),
@@ -38,6 +40,7 @@ async function rebuild(change) {
 await rebuild("startup");
 
 function scheduleRebuild(change) {
+  // 保存時に連続する変更通知をまとめて再ビルドする
   clearTimeout(rebuildTimer);
   rebuildTimer = setTimeout(async () => {
     try {
@@ -55,6 +58,7 @@ watch(contentDir, { recursive: true }, (_eventType, filename) => {
 watch(themeDir, { recursive: true }, (_eventType, filename) => {
   scheduleRebuild(filename?.toString() || "a theme change");
 });
+// dist への書き込みで再ビルドが繰り返されないよう監視対象を絞る
 watch(root, (_eventType, filename) => {
   if (filename?.toString() === path.basename(configFile)) scheduleRebuild("site.config.mjs");
 });
@@ -66,6 +70,7 @@ const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url, "http://localhost");
     if (url.pathname === "/_site/live-reload") {
+      // 通知用の接続を維持し、切断されたクライアントは管理対象から外す
       response.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
@@ -83,6 +88,7 @@ const server = createServer(async (request, response) => {
       response.writeHead(400).end("Invalid URL encoding");
       return;
     }
+    // URL をファイルパスへ変換した後も配信先が dist 内に収まることを確認する
     const file = path.resolve(dist, `.${pathname}`);
     if (pathname.includes("\\") || pathname.includes("\0") || (file !== dist && !file.startsWith(`${dist}${path.sep}`))) {
       response.writeHead(403).end("Forbidden");
@@ -90,6 +96,7 @@ const server = createServer(async (request, response) => {
     }
     let target = file;
     if ((await stat(target)).isDirectory()) {
+      // 相対 URL の基準を揃えるためディレクトリ URL は末尾のスラッシュを必須にする
       if (!url.pathname.endsWith("/")) {
         response.writeHead(301, { Location: `${url.pathname}/${url.search}` }).end();
         return;
@@ -98,6 +105,7 @@ const server = createServer(async (request, response) => {
     }
     let body = await readFile(target);
     if (path.extname(target) === ".html") {
+      // 再読み込み用スクリプトは配信時だけ挿入し、生成済み HTML は変更しない
       body = Buffer.from(`${body.toString("utf8").replace(
         "</body>",
         '<script>const reload = new EventSource("/_site/live-reload");reload.onmessage = () => location.reload();</script></body>',
