@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "test": "node --test scripts/site.test.mjs",
     "dev": "node scripts/preview.mjs",
     "preview": "node scripts/preview.mjs",
     "deploy": "npm run build && firebase deploy --only hosting"

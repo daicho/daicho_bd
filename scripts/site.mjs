@@ -76,6 +76,32 @@ function createMarkdown(files) {
       ? '<div class="page-label"><span aria-hidden="true"></span>\n'
       : "</div>\n",
   });
+  md.use(container, "tweet", { validate: (params) => params.trim() === "tweet" });
+  md.core.ruler.push("site-tweets", (state) => {
+    for (let index = 0; index < state.tokens.length; index++) {
+      const token = state.tokens[index];
+      if (token.type !== "container_tweet_open") continue;
+      const content = state.tokens[index + 2];
+      const match = content?.content.trim().match(
+        /^https:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/([a-z\d_]{1,15}|i\/web)\/status\/([1-9]\d*)\/?(?:[?#][^\s]*)?$/i,
+      );
+      if (state.tokens[index + 1]?.type !== "paragraph_open"
+        || content?.type !== "inline"
+        || state.tokens[index + 3]?.type !== "paragraph_close"
+        || state.tokens[index + 4]?.type !== "container_tweet_close"
+        || !match) {
+        throw new Error(`${state.env.source}:${token.map[0] + 1}: A "tweet" block must contain exactly one X/Twitter post URL.`);
+      }
+      const href = escapeHtml(`https://twitter.com/${match[1]}/status/${match[2]}`);
+      const embed = new state.Token("html_block", "", 0);
+      embed.block = true;
+      embed.content = `<div class="tweet-embed">
+<blockquote class="twitter-tweet" data-dnt="true"><a class="external-link" href="${href}" target="_blank" rel="noopener noreferrer">Xでポストを見る</a></blockquote>
+</div>\n`;
+      state.tokens.splice(index, 5, embed);
+      state.env.hasTweets = true;
+    }
+  });
   md.core.ruler.push("site-links-and-headings", (state) => {
     const usedIds = new Set();
     state.tokens.forEach((token, index) => {
@@ -118,7 +144,7 @@ function inlineText(token) {
   }).join("");
 }
 
-function renderPage({ title, body, url, config, notFound = false }) {
+function renderPage({ title, body, url, config, notFound = false, hasTweets = false }) {
   const home = url === "/";
   const documentTitle = home ? `${config.name}` : `${title} | ${config.name}`;
   const canonical = new URL(url, config.url).href;
@@ -157,7 +183,7 @@ ${body}
       ${escapeHtml(config.copyright)}
     </footer>
   </div>
-</body>
+${hasTweets ? '  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>\n' : ""}</body>
 </html>
 `;
 }
@@ -198,6 +224,7 @@ export async function buildSite({ root, config }) {
       output: `${decodeURIComponent(pageUrl(source)).slice(1)}index.html`,
       html: renderPage({
         title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config,
+        hasTweets: env.hasTweets,
       }),
     });
   }

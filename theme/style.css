@@ -137,6 +137,9 @@ main { padding-block: 3.8rem 3rem; }
   color: var(--muted);
 }
 .prose blockquote p { margin: 0; }
+.tweet-embed { margin-block: 1.5rem; }
+.prose .tweet-embed blockquote { padding: 0; border: 0; }
+.tweet-embed .twitter-tweet { margin-inline: auto; max-width: 100%; }
 .prose code { padding: .15em .4em; border-radius: 4px; background: #d8eaf6; font-size: .9em; }
 .prose pre { overflow-x: auto; padding: 1.2rem; border-radius: 12px; background: #d8eaf6; }
 .prose pre code { padding: 0; background: transparent; }
