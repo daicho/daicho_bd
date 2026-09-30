@@ -10,6 +10,7 @@ Markdownからプロフィール・リンクサイトの静的HTMLを生成し�
 
 1. このリポジトリをフォークします。
 2. `site.config.mjs` の `name`、`description`、`url`、`copyright` を自分用に設定します。
+   `googleAnalyticsId` も自分のGA4測定IDに変更するか、計測しない場合は空文字列にしてください。
 3. `content/` の内容を削除または自分の内容に置き換えます。
 4. サイト全体の見た目は `theme/style.css` で調整します。
 5. HTMLテンプレートなど細かい設定は `scripts/site.mjs` で変更します。
@@ -145,6 +146,14 @@ URLは `site.config.mjs` の `url` を基準に生成します。
 Gitリポジトリがない場合や、未コミットの新規ファイルなど履歴がない場合は、`lastmod` とページの更新日時表示を省略します。Gitが未インストールの場合も警告を表示して省略します。未コミットの編集や共通CSS・テンプレートだけの変更は、Markdownの更新日時には反映されません。その他のGitエラーはビルドエラーになります。
 
 公開後、Google Search Consoleにサイトを登録し、`https://<your-project-id>.web.app/sitemap.xml`（独自ドメインの場合はそのドメインの `/sitemap.xml`）を送信してください。サイトマップの送信は検索エンジンによる発見を助けますが、検索結果への掲載や順位を保証するものではありません。
+
+## Google Analyticsでアクセス解析する
+
+`site.config.mjs` の `googleAnalyticsId` にGA4の測定IDを設定すると、404ページを含むすべての生成HTMLの `<head>` にGoogleタグ（gtag.js）を追加します。
+
+自分のサイトで使う場合は、[Google Analytics](https://analytics.google.com/) でGA4プロパティとウェブデータストリームを作成し、表示される `G-` で始まる測定IDに変更してください。計測を無効にする場合は `googleAnalyticsId: ""` にするか、設定項目を削除します。不正な形式のIDはビルドエラーになります。
+
+計測を有効にすると、閲覧時にGoogleへの外部通信が発生します。Google Analyticsの利用・Cookie・データ収集についてプライバシーポリシーに記載し、対象地域や適用される規則に応じて同意取得を設定してください。
 
 ## Firebase / GitHub の初回設定
 

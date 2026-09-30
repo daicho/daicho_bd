@@ -223,7 +223,16 @@ function renderPage({ title, body, url, config, notFound = false, hasTweets = fa
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="/_site/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/_site/style.css">
-</head>
+${config.googleAnalyticsId ? `  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '${config.googleAnalyticsId}');
+  </script>
+` : ""}</head>
 <body>
   <a class="skip-link" href="#main">本文へスキップ</a>
   <div class="site-shell">
@@ -250,6 +259,10 @@ ${hasTweets ? '  <script async src="https://platform.twitter.com/widgets.js" cha
 }
 
 export async function buildSite({ root, config }) {
+  if (config.googleAnalyticsId !== undefined && config.googleAnalyticsId !== "" &&
+      (typeof config.googleAnalyticsId !== "string" || !/^G-[A-Z0-9]+$/.test(config.googleAnalyticsId))) {
+    throw new Error("site.config.mjs: googleAnalyticsId must be a G- prefixed measurement ID or an empty string.");
+  }
   const siteUrl = new URL(config.url);
   if (!["http:", "https:"].includes(siteUrl.protocol) || siteUrl.username || siteUrl.password) {
     throw new Error("site.config.mjs: url must be an absolute HTTP(S) URL without credentials.");
