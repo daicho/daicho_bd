@@ -206,6 +206,7 @@ main { padding-block: 3.8rem 3rem; }
 .link-card a:focus-visible { outline: none; }
 .link-card a:focus-visible::before { outline: 3px solid var(--blue); outline-offset: 3px; }
 .back-link { display: inline-block; margin-top: 2.5rem; font-size: .85rem; text-decoration: none; }
+.page-updated { margin-top: 2rem; color: var(--muted); font-size: .8rem; text-align: right; }
 .back-link:hover { text-decoration: none; }
 .back-link::before {
   content: "←";

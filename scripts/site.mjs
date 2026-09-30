@@ -1,5 +1,7 @@
 import { cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
 import path from "node:path";
+import { promisify } from "node:util";
 import MarkdownIt from "markdown-it";
 import container from "markdown-it-container";
 
@@ -10,6 +12,52 @@ const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 const encodePath = (value) => value.split("/").map(encodeURIComponent).join("/");
 
 const isExternalLink = (href) => /^(?:https?:)?\/\//i.test(href);
+
+const execFileAsync = promisify(execFile);
+const updatedDateFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Tokyo",
+  year: "numeric", month: "2-digit", day: "2-digit",
+  hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+});
+
+async function pageUpdates(root, pages) {
+  const runGit = (args) => execFileAsync("git", ["--literal-pathspecs", "-C", root, ...args], {
+    env: { ...process.env, LC_ALL: "C" },
+  });
+  const updates = new Map();
+  try {
+    await runGit(["rev-parse", "--show-toplevel"]);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.warn("Git is unavailable; page update dates will be omitted.");
+      return updates;
+    }
+    if (error.code === 128 && error.stderr?.includes("not a git repository")) return updates;
+    throw error;
+  }
+  try {
+    await runGit(["rev-parse", "--verify", "--quiet", "HEAD"]);
+  } catch (error) {
+    if (error.code === 1) return updates;
+    throw error;
+  }
+  for (const source of pages) {
+    const { stdout } = await runGit(["log", "-1", "--follow", "--format=%cI", "--", `content/${source}`]);
+    const timestamp = stdout.trim();
+    if (!timestamp) continue;
+    const date = new Date(timestamp);
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/.test(timestamp)
+      || Number.isNaN(date.getTime())) {
+      throw new Error(`${source}: Invalid Git commit timestamp: ${timestamp}`);
+    }
+    const parts = Object.fromEntries(updatedDateFormatter.formatToParts(date).map(({ type, value }) => [type, value]));
+    updates.set(source, {
+      timestamp,
+      display: `${parts.year}/${parts.month}/${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`,
+    });
+  }
+  return updates;
+}
 
 export function pageUrl(file) {
   const stem = file.replace(/\.md$/i, "");
@@ -144,7 +192,7 @@ function inlineText(token) {
   }).join("");
 }
 
-function renderPage({ title, body, url, config, notFound = false, hasTweets = false }) {
+function renderPage({ title, body, url, config, notFound = false, hasTweets = false, updated }) {
   const home = url === "/";
   const documentTitle = home ? `${config.name}` : `${title} | ${config.name}`;
   const canonical = new URL(url, config.url).href;
@@ -177,6 +225,7 @@ function renderPage({ title, body, url, config, notFound = false, hasTweets = fa
       <article class="prose${home ? " home" : ""}">
 ${body}
       </article>
+      ${updated ? `<p class="page-updated">最終更新日時：<time datetime="${escapeHtml(updated.timestamp)}">${escapeHtml(updated.display)}</time></p>` : ""}
       ${home ? "" : '<a class="back-link" href="/"><span class="back-link-label">トップに戻る</span></a>'}
     </main>
     <footer class="site-footer">
@@ -218,6 +267,7 @@ export async function buildSite({ root, config }) {
       : file;
     claim(output, file);
   }
+  const updates = await pageUpdates(root, pages);
   const md = createMarkdown(files);
   const rendered = [];
   for (const source of pages) {
@@ -231,12 +281,16 @@ export async function buildSite({ root, config }) {
       html: renderPage({
         title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config,
         hasTweets: env.hasTweets,
+        updated: updates.get(source),
       }),
     });
   }
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.map((source) => `  <url><loc>${escapeHtml(new URL(pageUrl(source), siteUrl).href)}</loc></url>`).join("\n")}
+${pages.map((source) => {
+    const updated = updates.get(source);
+    return `  <url><loc>${escapeHtml(new URL(pageUrl(source), siteUrl).href)}</loc>${updated ? `<lastmod>${escapeHtml(updated.timestamp)}</lastmod>` : ""}</url>`;
+  }).join("\n")}
 </urlset>
 `;
   const robots = `User-agent: *
