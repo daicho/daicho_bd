@@ -35,5 +35,5 @@ https://github.com/daicho/daicho_bd
 
 ## お問い合わせ
 
-当サイトに関するご連絡は、だいちょの [Xアカウント（@daicho_bd）](https://x.com/daicho_bd) のDMにお願いします。
+当サイトに関するご連絡は、だいちょの [Xアカウント (@daicho_bd)](https://x.com/daicho_bd) のDMにお願いします。
 ご連絡に含まれる情報は、お問い合わせへの対応に必要な範囲で利用します。
