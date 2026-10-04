@@ -128,7 +128,6 @@ main { padding-block: 3.8rem 3rem; }
 .prose ul, .prose ol { padding-left: 1.5rem; }
 .prose li::marker { color: var(--blue); }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin-block: 2.2rem; }
-.prose hr + p { color: var(--muted); font-size: .8rem; }
 .prose img { display: block; max-width: 100%; height: auto; border-radius: 12px; }
 .prose blockquote {
   margin-inline: 0;
