@@ -42,6 +42,48 @@ Markdownの記法やリンクにエラーがある場合は、ターミナルに
 
 存在しないページは、トップへのリンクを付けた404ページになります。
 
+### Front Matter（ページごとのメタデータ）
+
+Markdownの**先頭**に `---` で囲んだYAMLを書くと、descriptionやOGP、X（Twitter）カードを設定できます。Front Matter自体は本文には表示されません。
+
+```markdown
+---
+title: 自己紹介 | だいちょ
+description: 趣味や好きなものを紹介するページです。
+og:
+  type: profile
+  title: だいちょの自己紹介
+  description: 好きな音楽や作品をまとめました。
+  image: assets/profile.jpg
+  imageAlt: プロフィール画像
+twitter:
+  card: summary_large_image
+  site: "@your_handle"
+  creator: "@your_handle"
+---
+
+# 自己紹介
+```
+
+| 項目 | 用途・未指定時の動作 |
+| --- | --- |
+| `title` | HTMLのタイトルをそのまま指定。未指定なら従来どおり、トップはサイト名、それ以外は最初のH1とサイト名。本文のH1は変更しません。 |
+| `description` | `meta name="description"`。未指定なら `site.config.mjs` の `description` を使用し、どちらもなければ省略。 |
+| `og.title` / `og.description` | OGP専用のタイトル・説明。未指定ならHTMLのタイトル・description。 |
+| `og.type` | `website`（既定）、`article`、`profile`。 |
+| `og.image` / `og.imageAlt` | OGP画像と代替テキスト。画像未指定なら画像タグは省略。 |
+| `twitter.title` / `twitter.description` | Xカード専用のタイトル・説明。未指定ならOGPの値。 |
+| `twitter.image` / `twitter.imageAlt` | Xカード専用の画像と代替テキスト。画像未指定ならOGP画像・代替テキストを使用。別画像を指定した場合、代替テキストも別途指定してください。 |
+| `twitter.card` | `summary` または `summary_large_image`。未指定なら画像がある場合は `summary_large_image`、なければ `summary`。 |
+| `twitter.site` / `twitter.creator` | サイト・作者のXアカウント。`"@your_handle"` のように引用符で囲みます。未指定なら省略。 |
+
+すべての項目は任意です。Front Matterがなくても、これまでのMarkdownはそのまま使えます。`# ページタイトル` は引き続き必要です。
+
+画像はMarkdownからの相対パス、`content` をルートとした `/assets/profile.jpg`、またはHTTP(S)の外部URLで指定できます。ローカルファイルの存在を確認し、共有用に絶対URLへ変換します。外部画像の存在は確認しません。
+`og:url` とcanonicalは公開URLから、`og:site_name` と `og:locale` はサイト設定から自動生成します。
+
+不正なYAML、未対応の項目、文字列以外や空の値、不正なカード種別・画像パスはファイル名付きのビルドエラーになります。複数行の説明にはYAMLの `>-` が使えます。
+
 ### リンク
 
 例えば、`[ライブの記録](notes/live.md)` と書けば、ビルド時に `/notes/live/` に変換されます。

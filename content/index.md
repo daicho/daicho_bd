@@ -1,3 +1,7 @@
+---
+description: だいちょのプロフィールサイトです。
+---
+
 ::: label
 A LITTLE ABOUT ME
 :::

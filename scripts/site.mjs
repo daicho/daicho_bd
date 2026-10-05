@@ -4,6 +4,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import MarkdownIt from "markdown-it";
 import container from "markdown-it-container";
+import { parseDocument } from "yaml";
 
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -115,6 +116,83 @@ function rewriteLink(href, source, files) {
   throw new Error(`${source}: Local link or image not found: ${href}`);
 }
 
+function parseFrontMatter(markdown, source) {
+  // ファイル先頭の YAML だけを本文から分離し、BOM・CRLF にも対応する
+  const lines = markdown.replace(/^\uFEFF/, "").split(/\r?\n/);
+  if (lines[0] !== "---") return { body: markdown, metadata: {}, lineOffset: 0 };
+  const end = lines.findIndex((line, index) => index > 0 && line === "---");
+  if (end < 0) throw new Error(`${source}: Front Matter must end with "---".`);
+  const document = parseDocument(lines.slice(1, end).join("\n"), { schema: "core" });
+  if (document.errors.length || document.warnings.length) {
+    throw new Error(`${source}: Invalid Front Matter: ${(document.errors[0] ?? document.warnings[0]).message}`);
+  }
+  let metadata;
+  try {
+    // 空の Front Matter は許可するが、YAML エイリアスの展開は許可しない
+    metadata = document.contents === null ? {} : document.toJS({ maxAliasCount: 0 });
+  } catch (error) {
+    throw new Error(`${source}: Invalid Front Matter: ${error.message}`, { cause: error });
+  }
+  // 設定の誤記を見逃さないよう、対応項目と値の型を入れ子も含めて検証する
+  const validate = (value, fields, prefix) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error(`${source}: ${prefix || "Front Matter"} must be a mapping.`);
+    }
+    for (const [key, entry] of Object.entries(value)) {
+      const field = `${prefix}${key}`;
+      if (!fields.includes(key)) throw new Error(`${source}: Unknown Front Matter field: ${field}`);
+      if (key === "og") {
+        validate(entry, ["title", "description", "type", "image", "imageAlt"], "og.");
+      } else if (key === "twitter") {
+        validate(entry, ["card", "title", "description", "image", "imageAlt", "site", "creator"], "twitter.");
+      } else if (typeof entry !== "string" || !entry.trim()) {
+        throw new Error(`${source}: ${field} must be a non-empty string.`);
+      }
+    }
+  };
+  validate(metadata, ["title", "description", "og", "twitter"], "");
+  if (metadata.og?.type && !["website", "article", "profile"].includes(metadata.og.type)) {
+    throw new Error(`${source}: og.type must be website, article, or profile.`);
+  }
+  if (metadata.twitter?.card && !["summary", "summary_large_image"].includes(metadata.twitter.card)) {
+    throw new Error(`${source}: twitter.card must be summary or summary_large_image.`);
+  }
+  for (const field of ["site", "creator"]) {
+    if (metadata.twitter?.[field] && !/^@[a-z\d_]{1,15}$/i.test(metadata.twitter[field])) {
+      throw new Error(`${source}: twitter.${field} must be an @ prefixed X account name.`);
+    }
+  }
+  // 除いた行数を保持し、Markdown のエラー位置を元ファイルの行番号で報告する
+  return { body: lines.slice(end + 1).join("\n"), metadata, lineOffset: end + 1 };
+}
+
+function metadataImage(href, source, files, siteUrl) {
+  // 本文と同じ規則でローカルパスを解決し、ページではなく添付ファイルか確認する
+  if (href === undefined) return undefined;
+  let resolved = href;
+  if (!/^(?:https?:\/\/|\/\/)/i.test(href)) {
+    if (/^(?:[a-z][a-z\d+.-]*:|#|\?)/i.test(href)) {
+      throw new Error(`${source}: Metadata images must use HTTP(S) URLs or local image paths.`);
+    }
+    resolved = rewriteLink(href, source, files);
+    const target = decodeURIComponent(resolved.split(/[?#]/)[0]).slice(1);
+    if (!files.has(target) || /\.md$/i.test(target)) {
+      throw new Error(`${source}: Metadata image must reference an asset: ${href}`);
+    }
+  }
+  // SNS が取得できる絶対 URL に揃え、認証情報付き URL や HTTP(S) 以外を拒否する
+  let image;
+  try {
+    image = new URL(resolved, siteUrl);
+  } catch (error) {
+    throw new Error(`${source}: Invalid metadata image URL: ${href}`, { cause: error });
+  }
+  if (!["http:", "https:"].includes(image.protocol) || image.username || image.password) {
+    throw new Error(`${source}: Metadata images must use HTTP(S) URLs without credentials.`);
+  }
+  return image.href;
+}
+
 function createMarkdown(files) {
   const md = new MarkdownIt({ breaks: true, html: true, linkify: true, typographer: false });
   for (const name of ["link", "note"]) {
@@ -146,7 +224,7 @@ function createMarkdown(files) {
         || state.tokens[index + 3]?.type !== "paragraph_close"
         || state.tokens[index + 4]?.type !== "container_tweet_close"
         || !match) {
-        throw new Error(`${state.env.source}:${token.map[0] + 1}: A "tweet" block must contain exactly one X/Twitter post URL.`);
+        throw new Error(`${state.env.source}:${token.map[0] + 1 + state.env.lineOffset}: A "tweet" block must contain exactly one X/Twitter post URL.`);
       }
       const href = escapeHtml(`https://twitter.com/${match[1]}/status/${match[2]}`);
       const embed = new state.Token("html_block", "", 0);
@@ -203,24 +281,46 @@ function inlineText(token) {
   }).join("");
 }
 
-function renderPage({ title, body, url, config, notFound = false, hasTweets = false, updated }) {
+function renderPage({ title, body, url, config, metadata = {}, notFound = false, hasTweets = false, updated }) {
   // 共通レイアウトにページ情報を埋め込み、404 は検索対象から外す
   const home = url === "/";
-  const documentTitle = home ? `${config.name}` : `${title} | ${config.name}`;
+  const documentTitle = metadata.title ?? (home ? `${config.name}` : `${title} | ${config.name}`);
   const canonical = new URL(url, config.url).href;
+  // ページ設定を優先し、description はサイト設定、OGP・X は共通の値を引き継ぐ
+  const description = metadata.description ?? config.description;
+  const og = metadata.og ?? {};
+  const twitter = metadata.twitter ?? {};
+  const ogTitle = og.title ?? documentTitle;
+  const ogDescription = og.description ?? description;
+  const twitterImage = twitter.image ?? og.image;
+  // X 専用画像には、別画像の OGP 代替テキストを流用しない
+  const twitterImageAlt = twitter.imageAlt ?? (twitter.image === undefined ? og.imageAlt : undefined);
+  // 未設定のタグは省略し、メタデータを HTML 属性として安全に埋め込む
+  const meta = (attribute, name, value) => value === undefined || value === ""
+    ? "" : `  <meta ${attribute}="${name}" content="${escapeHtml(value)}">\n`;
   return `<!doctype html>
 <html lang="${escapeHtml(config.language)}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(documentTitle)}</title>
+${meta("name", "description", description)}\
   ${notFound ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${escapeHtml(canonical)}">`}
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="${escapeHtml(og.type ?? "website")}">
   <meta property="og:locale" content="${escapeHtml(config.language === "ja" ? "ja_JP" : config.language)}">
   <meta property="og:site_name" content="${escapeHtml(config.name)}">
-  <meta property="og:title" content="${escapeHtml(documentTitle)}">
+  <meta property="og:title" content="${escapeHtml(ogTitle)}">
   <meta property="og:url" content="${escapeHtml(canonical)}">
-  <meta name="twitter:card" content="summary">
+${meta("property", "og:description", ogDescription)}\
+${meta("property", "og:image", og.image)}\
+${meta("property", "og:image:alt", og.image ? og.imageAlt : undefined)}\
+  <meta name="twitter:card" content="${escapeHtml(twitter.card ?? (twitterImage ? "summary_large_image" : "summary"))}">
+${meta("name", "twitter:title", twitter.title ?? ogTitle)}\
+${meta("name", "twitter:description", twitter.description ?? ogDescription)}\
+${meta("name", "twitter:image", twitterImage)}\
+${meta("name", "twitter:image:alt", twitterImage ? twitterImageAlt : undefined)}\
+${meta("name", "twitter:site", twitter.site)}\
+${meta("name", "twitter:creator", twitter.creator)}\
   <link rel="icon" href="/_site/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/_site/style.css">
 ${config.googleAnalyticsId ? `  <!-- Google tag (gtag.js) -->
@@ -303,8 +403,15 @@ export async function buildSite({ root, config }) {
   const md = createMarkdown(files);
   const rendered = [];
   for (const source of pages) {
-    const env = { source };
-    const tokens = md.parse(await readFile(path.join(contentDir, source), "utf8"), env);
+    // Front Matter を本文のパース前に取り出し、共有画像を検証してからレンダリングする
+    const { body, metadata, lineOffset } = parseFrontMatter(await readFile(path.join(contentDir, source), "utf8"), source);
+    for (const group of ["og", "twitter"]) {
+      if (metadata[group]?.image !== undefined) {
+        metadata[group].image = metadataImage(metadata[group].image, source, files, siteUrl);
+      }
+    }
+    const env = { source, lineOffset };
+    const tokens = md.parse(body, env);
     // 最初の H1 をページタイトルとして使い、見出しのないページはビルドエラーにする
     const headingIndex = tokens.findIndex((token) => token.type === "heading_open" && token.tag === "h1");
     if (headingIndex < 0) throw new Error(`${source}: Add a "# Page title" heading.`);
@@ -312,7 +419,7 @@ export async function buildSite({ root, config }) {
     rendered.push({
       output: `${decodeURIComponent(pageUrl(source)).slice(1)}index.html`,
       html: renderPage({
-        title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config,
+        title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config, metadata,
         hasTweets: env.hasTweets,
         updated: updates.get(source),
       }),

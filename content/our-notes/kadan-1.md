@@ -1,3 +1,13 @@
+---
+description: アワーノーツ 一家Dumb Rock! バンドストーリー「THAT KIND 愛」の感想です。
+og:
+  type: article
+  image: ./image/shizuku-2.jpg
+  imageAlt: 寧月
+twitter:
+  card: summary_large_image
+---
+
 ::: label
 THOUGHTS ON THE STORY
 :::
