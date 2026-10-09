@@ -15,52 +15,58 @@ const encodePath = (value) => value.split("/").map(encodeURIComponent).join("/")
 const isExternalLink = (href) => /^(?:https?:)?\/\//i.test(href);
 
 const execFileAsync = promisify(execFile);
-const updatedDateFormatter = new Intl.DateTimeFormat("en-GB", {
+const pageDateFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Asia/Tokyo",
   year: "numeric", month: "2-digit", day: "2-digit",
   hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
 });
 
-async function pageUpdates(root, pages) {
-  // ファイル名を Git のパターンとして解釈させず、更新日時をコミット履歴から取得する
+async function pageDates(root, pages) {
+  // ファイル名を Git のパターンとして解釈させず、日時をコミット履歴から取得する
   const runGit = (args) => execFileAsync("git", ["--literal-pathspecs", "-C", root, ...args], {
     env: { ...process.env, LC_ALL: "C" },
   });
-  const updates = new Map();
-  // Git が使えない環境やコミットのないリポジトリでは更新日時を付けない
+  const dates = new Map();
+  // Git が使えない環境やコミットのないリポジトリでは日時を付けない
   try {
     await runGit(["rev-parse", "--show-toplevel"]);
   } catch (error) {
     if (error.code === "ENOENT") {
-      console.warn("Git is unavailable; page update dates will be omitted.");
-      return updates;
+      console.warn("Git is unavailable; page publication and update dates will be omitted.");
+      return dates;
     }
-    if (error.code === 128 && error.stderr?.includes("not a git repository")) return updates;
+    if (error.code === 128 && error.stderr?.includes("not a git repository")) return dates;
     throw error;
   }
   try {
     await runGit(["rev-parse", "--verify", "--quiet", "HEAD"]);
   } catch (error) {
-    if (error.code === 1) return updates;
+    if (error.code === 1) return dates;
     throw error;
   }
   for (const source of pages) {
     // 改名前の履歴も追跡し、表示用の日時だけ日本時間へ変換する
-    const { stdout } = await runGit(["log", "-1", "--follow", "--format=%cI", "--", `content/${source}`]);
-    const timestamp = stdout.trim();
-    if (!timestamp) continue;
-    const date = new Date(timestamp);
-    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/.test(timestamp)
-      || Number.isNaN(date.getTime())) {
-      throw new Error(`${source}: Invalid Git commit timestamp: ${timestamp}`);
-    }
-    const parts = Object.fromEntries(updatedDateFormatter.formatToParts(date).map(({ type, value }) => [type, value]));
-    updates.set(source, {
-      timestamp,
-      display: `${parts.year}/${parts.month}/${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`,
+    const { stdout } = await runGit(["log", "--follow", "--format=%cI", "--", `content/${source}`]);
+    if (!stdout.trim()) continue;
+    const timestamps = stdout.trim().split(/\r?\n/);
+    const formatDate = (timestamp) => {
+      const date = new Date(timestamp);
+      if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/.test(timestamp)
+        || Number.isNaN(date.getTime())) {
+        throw new Error(`${source}: Invalid Git commit timestamp: ${timestamp}`);
+      }
+      const parts = Object.fromEntries(pageDateFormatter.formatToParts(date).map(({ type, value }) => [type, value]));
+      return {
+        timestamp,
+        display: `${parts.year}/${parts.month}/${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`,
+      };
+    };
+    dates.set(source, {
+      updated: formatDate(timestamps[0]),
+      published: formatDate(timestamps.at(-1)),
     });
   }
-  return updates;
+  return dates;
 }
 
 export function pageUrl(file) {
@@ -281,7 +287,7 @@ function inlineText(token) {
   }).join("");
 }
 
-function renderPage({ title, body, url, config, metadata = {}, notFound = false, hasTweets = false, updated }) {
+function renderPage({ title, body, url, config, metadata = {}, notFound = false, hasTweets = false, updated, published }) {
   // 共通レイアウトにページ情報を埋め込み、404 は検索対象から外す
   const home = url === "/";
   const documentTitle = metadata.title ?? (home ? `${config.name}` : `${title} | ${config.name}`);
@@ -311,7 +317,9 @@ function renderPage({ title, body, url, config, metadata = {}, notFound = false,
     isPartOf: { "@id": websiteId },
     image: og.image,
     dateModified: updated?.timestamp,
+    datePublished: published?.timestamp,
     author,
+    publisher: author,
   };
   const graph = [
     {
@@ -321,6 +329,7 @@ function renderPage({ title, body, url, config, metadata = {}, notFound = false,
       name: config.name,
       inLanguage: config.language,
       author,
+      publisher: author,
     },
     pageData,
   ];
@@ -336,8 +345,10 @@ function renderPage({ title, body, url, config, metadata = {}, notFound = false,
       inLanguage: config.language,
       image: og.image,
       dateModified: updated?.timestamp,
+      datePublished: published?.timestamp,
       mainEntityOfPage: { "@id": pageId },
       author,
+      publisher: author,
     });
   }
   // script 内は HTML エンティティではなく JSON のエスケープで閉じタグを無害化する
@@ -448,7 +459,7 @@ export async function buildSite({ root, config }) {
       : file;
     claim(output, file);
   }
-  const updates = await pageUpdates(root, pages);
+  const dates = await pageDates(root, pages);
   const md = createMarkdown(files);
   const rendered = [];
   for (const source of pages) {
@@ -470,14 +481,15 @@ export async function buildSite({ root, config }) {
       html: renderPage({
         title, body: md.renderer.render(tokens, md.options, env), url: pageUrl(source), config, metadata,
         hasTweets: env.hasTweets,
-        updated: updates.get(source),
+        updated: dates.get(source)?.updated,
+        published: dates.get(source)?.published,
       }),
     });
   }
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((source) => {
-    const updated = updates.get(source);
+    const updated = dates.get(source)?.updated;
     return `  <url><loc>${escapeHtml(new URL(pageUrl(source), siteUrl).href)}</loc>${updated ? `<lastmod>${escapeHtml(updated.timestamp)}</lastmod>` : ""}</url>`;
   }).join("\n")}
 </urlset>
