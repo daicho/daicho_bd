@@ -187,8 +187,6 @@ URLは `site.config.mjs` の `url` を基準に生成します。
 
 公開Markdownページの `<head>` にJSON-LDを自動生成します。サイトは `WebSite`、通常ページは `WebPage`、`og.type: profile` のページは `ProfilePage` として出力し、`og.type: article` のページには `Article` も追加します。タイトル・説明・画像はOGPと同じ値を使用します。404ページには出力しません。
 
-`site.config.mjs` の `author`（例: `author: "だいちょ"`）を、サイト・各ページ・記事の `author` と `publisher` に同じ `Person` 型で出力します。`publisher` の個別設定は不要です。`author` が未指定なら両方を省略し、空文字列や文字列以外はビルドエラーになります。ページと記事の `datePublished`・`dateModified` は以下のGit履歴から取得します。
-
 ### 公開日時・更新日時
 
 各Markdownの最初のコミット日時を公開日時、最後に変更されたコミット日時を更新日時として取得します。いずれもコミッター日時を使用し、ファイル名を変更した場合は変更前の履歴も追跡します。公開日時は実際のデプロイ日時ではなく、Git履歴上でファイルが最初に記録された日時です。

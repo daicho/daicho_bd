@@ -306,7 +306,14 @@ function renderPage({ title, body, url, config, metadata = {}, notFound = false,
     ? "" : `  <meta ${attribute}="${name}" content="${escapeHtml(value)}">\n`;
   const websiteId = new URL("/#website", config.url).href;
   const pageId = `${canonical}#webpage`;
-  const author = config.author ? { "@type": "Person", name: config.author } : undefined;
+  const personId = new URL("/#person", config.url).href;
+  const person = config.author ? {
+    "@type": "Person",
+    "@id": personId,
+    name: config.author,
+    url: new URL("/", config.url).href,
+  } : undefined;
+  const author = person ? { "@id": personId } : undefined;
   const pageData = {
     "@type": og.type === "profile" ? "ProfilePage" : "WebPage",
     "@id": pageId,
@@ -333,6 +340,7 @@ function renderPage({ title, body, url, config, metadata = {}, notFound = false,
     },
     pageData,
   ];
+  if (person) graph.push(person);
   if (og.type === "article") {
     const articleId = `${canonical}#article`;
     pageData.mainEntity = { "@id": articleId };
