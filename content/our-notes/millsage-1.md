@@ -1,3 +1,8 @@
+---
+og:
+  type: article
+---
+
 ::: label
 THOUGHTS ON THE STORY
 :::

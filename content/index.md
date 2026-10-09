@@ -1,5 +1,7 @@
 ---
 description: だいちょのプロフィールサイトです。
+og:
+  type: profile
 ---
 
 ::: label
