@@ -298,6 +298,51 @@ function renderPage({ title, body, url, config, metadata = {}, notFound = false,
   // 未設定のタグは省略し、メタデータを HTML 属性として安全に埋め込む
   const meta = (attribute, name, value) => value === undefined || value === ""
     ? "" : `  <meta ${attribute}="${name}" content="${escapeHtml(value)}">\n`;
+  const websiteId = new URL("/#website", config.url).href;
+  const pageId = `${canonical}#webpage`;
+  const author = config.author ? { "@type": "Person", name: config.author } : undefined;
+  const pageData = {
+    "@type": og.type === "profile" ? "ProfilePage" : "WebPage",
+    "@id": pageId,
+    url: canonical,
+    name: ogTitle,
+    description: ogDescription || undefined,
+    inLanguage: config.language,
+    isPartOf: { "@id": websiteId },
+    image: og.image,
+    dateModified: updated?.timestamp,
+    author,
+  };
+  const graph = [
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: new URL("/", config.url).href,
+      name: config.name,
+      inLanguage: config.language,
+      author,
+    },
+    pageData,
+  ];
+  if (og.type === "article") {
+    const articleId = `${canonical}#article`;
+    pageData.mainEntity = { "@id": articleId };
+    graph.push({
+      "@type": "Article",
+      "@id": articleId,
+      url: canonical,
+      headline: ogTitle,
+      description: ogDescription || undefined,
+      inLanguage: config.language,
+      image: og.image,
+      dateModified: updated?.timestamp,
+      mainEntityOfPage: { "@id": pageId },
+      author,
+    });
+  }
+  // script 内は HTML エンティティではなく JSON のエスケープで閉じタグを無害化する
+  const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph })
+    .replace(/</g, "\\u003c");
   return `<!doctype html>
 <html lang="${escapeHtml(config.language)}">
 <head>
@@ -321,6 +366,7 @@ ${meta("name", "twitter:image", twitterImage)}\
 ${meta("name", "twitter:image:alt", twitterImage ? twitterImageAlt : undefined)}\
 ${meta("name", "twitter:site", twitter.site)}\
 ${meta("name", "twitter:creator", twitter.creator)}\
+${notFound ? "" : `  <script type="application/ld+json">${jsonLd}</script>\n`}\
   <link rel="icon" href="/_site/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/_site/style.css">
 ${config.googleAnalyticsId ? `  <!-- Google tag (gtag.js) -->
@@ -365,6 +411,9 @@ ${hasTweets ? '  <script async src="https://platform.twitter.com/widgets.js" cha
 }
 
 export async function buildSite({ root, config }) {
+  if (config.author !== undefined && (typeof config.author !== "string" || !config.author.trim())) {
+    throw new Error("site.config.mjs: author must be a non-empty string.");
+  }
   if (config.googleAnalyticsId !== undefined && config.googleAnalyticsId !== "" &&
       (typeof config.googleAnalyticsId !== "string" || !/^G-[A-Z0-9]+$/.test(config.googleAnalyticsId))) {
     throw new Error("site.config.mjs: googleAnalyticsId must be a G- prefixed measurement ID or an empty string.");

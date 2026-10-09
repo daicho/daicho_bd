@@ -9,7 +9,7 @@ Markdownからプロフィール・リンクサイトの静的HTMLを生成し�
 ## フォークして自分のサイトを公開する
 
 1. このリポジトリをフォークします。
-2. `site.config.mjs` の `name`、`description`、`url`、`copyright` を自分用に設定します。
+2. `site.config.mjs` の `name`、`author`、`description`、`url`、`copyright` を自分用に設定します。
    `googleAnalyticsId` も自分のGA4測定IDに変更するか、計測しない場合は空文字列にしてください。
 3. `content/` の内容を削除または自分の内容に置き換えます。
 4. サイト全体の見た目は `theme/style.css` で調整します。
