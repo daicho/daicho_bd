@@ -130,7 +130,8 @@ const LIVES = [
     }
 
     const winProb = (k) => (entryProb >= 1 ? 1 : -Math.expm1(k * Math.log1p(-entryProb)));
-    return { seats, winners, serials, people, entryProb, winProb, q, notice };
+    const odds = entryProb > 0 ? 1 / entryProb : null;
+    return { seats, winners, serials, people, entryProb, odds, winProb, q, notice };
   }
 
   function chartRange() {
@@ -220,6 +221,8 @@ const LIVES = [
     $("stat-seats").textContent = `${fmtNum(model.seats, 1)}席`;
     $("stat-serials").textContent = `${fmtNum(model.serials)}枚`;
     $("stat-people").textContent = `${fmtNum(model.people)}人`;
+    $("stat-serial-prob").textContent = fmtPct(model.entryProb);
+    $("stat-odds").textContent = model.odds === null ? "-" : `${fmtNum(model.odds, 1)}倍`;
     $("win-chart").setAttribute("aria-label", `積み枚数ごとの当選確率のグラフ。積み${state.stack}枚で${fmtPct(prob)}`);
     const warning = $("warning");
     warning.hidden = !model.notice;

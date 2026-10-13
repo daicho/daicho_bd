@@ -56,6 +56,14 @@ LIVE LOTTERY SIMULATOR
     <dt>推定応募者数</dt>
     <dd id="stat-people">-</dd>
   </div>
+  <div>
+    <dt>1シリアルあたりの当選確率</dt>
+    <dd id="stat-serial-prob">-</dd>
+  </div>
+  <div>
+    <dt>倍率</dt>
+    <dd id="stat-odds">-</dd>
+  </div>
 </dl>
 
 <details class="sim-details">
