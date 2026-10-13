@@ -36,12 +36,12 @@ const LIVES = [
   "use strict";
 
   const FIELDS = [
-    { key: "capacity", group: "main", label: "会場キャパ", unit: "人", hardMin: 1, hardMax: 1e6, sMin: 100, sMax: 5000, step: 10 },
+    { key: "capacity", group: "main", label: "キャパ", unit: "人", hardMin: 1, hardMax: 1e6, sMin: 100, sMax: 50000, step: 10 },
     { key: "cdSales", group: "main", label: "CD売上枚数", unit: "枚", hardMin: 1, hardMax: 1e7, sMin: 1000, sMax: 100000, step: 100 },
-    { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 30, step: 1, int: true },
-    { key: "allocationRate", group: "detail", label: "会場キャパに対するシリアル抽選での割り当て割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
+    { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 50, step: 1, int: true },
+    { key: "allocationRate", group: "detail", label: "キャパに対するシリアル抽選での割り当て割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "useRate", group: "detail", label: "CD売上枚数に対するシリアル使用率", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "slotsPerSerial", group: "detail", label: "1シリアルあたりの平均申し込み枠数", unit: "枠", hardMin: 1, hardMax: 10, sMin: 1, sMax: 5, step: 0.1 },
+    { key: "slotsPerSerial", group: "detail", label: "1シリアルあたりの平均申し込み枠数", unit: "枠", hardMin: 1, hardMax: 10, sMin: 1, sMax: 4, step: 0.1 },
     { key: "stackMean", group: "detail", label: "1人あたりの積み数の平均", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 10, step: 0.1 },
     { key: "stackVariance", group: "detail", label: "1人あたりの積み数の分散", unit: "", hardMin: 0, hardMax: 1000, sMin: 0, sMax: 100, step: 0.1 },
   ];
