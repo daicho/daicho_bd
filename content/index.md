@@ -103,6 +103,10 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 - [アニメ視聴歴](anime/history.md)
 - [オタク年表](me/otaku-timeline.md)
 
+## ツール
+
+- [バンドリ！ライブ当選確率シミュレーター](live-lottery-simulator/index.md)
+
 ## その他の趣味
 
 - **けん玉**
