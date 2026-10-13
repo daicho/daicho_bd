@@ -344,7 +344,13 @@ const LIVES = [
   select.innerHTML = LIVES.map((live) => `<option value="${live.id}">${live.name}</option>`)  .join("");
   select.addEventListener("change", () => {
     const live = LIVES.find((item) => item.id === select.value);
-    if (live) applyLive(live);
+    if (live) {
+      applyLive(live);
+      const url = new URL(location.href);
+      url.searchParams.set("live", live.id);
+      url.hash = "";
+      history.replaceState(null, "", url);
+    }
   });
   FIELDS.forEach(createField);
   const showLoss = $("show-loss");
@@ -359,8 +365,10 @@ const LIVES = [
   });
   applyShowLoss();
   createCharts();
-  select.value = LIVES[0].id;
-  applyLive(LIVES[0]);
+  const requestedId = new URLSearchParams(location.search).get("live") || decodeURIComponent(location.hash.slice(1));
+  const initialLive = LIVES.find((item) => item.id === requestedId) || LIVES[0];
+  select.value = initialLive.id;
+  applyLive(initialLive);
 
   renderMath();
 })();
