@@ -1,5 +1,5 @@
 // ライブごとの初期値。ライブを追加するときは、ここに項目を足してください。
-// allocationRate / useRate は %、stackMean / stackVariance は積み数の分布（1 + 負の二項分布）の平均と分散です。
+// allocationRate / useRate は %、stackMean / stackVariance は積み数の分布（1 + 負の二項分布）の平均と分散、cdPrice は CD 1枚あたりの価格（円）です。
 const DEFAULT_STACK = 1;
 const LIVES = [
   {
@@ -14,6 +14,7 @@ const LIVES = [
       slotsPerSerial: 1.5,
       stackMean: 3.0,
       stackVariance: 20.0,
+      cdPrice: 1650,
     },
   },
   {
@@ -28,6 +29,7 @@ const LIVES = [
       slotsPerSerial: 1.5,
       stackMean: 3.0,
       stackVariance: 20.0,
+      cdPrice: 1650,
     },
   },
 ];
@@ -38,7 +40,8 @@ const LIVES = [
   const FIELDS = [
     { key: "capacity", group: "main", label: "キャパ", unit: "人", hardMin: 1, hardMax: 1e6, sMin: 100, sMax: 50000, step: 10 },
     { key: "cdSales", group: "main", label: "CD売上枚数", unit: "枚", hardMin: 1, hardMax: 1e7, sMin: 1000, sMax: 100000, step: 100 },
-    { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 50, step: 1, int: true },
+    { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 1000, sMin: 1, sMax: 50, step: 1, int: true },
+    { key: "cdPrice", group: "loss", label: "CD単価", unit: "円", hardMin: 0, hardMax: 100000, sMin: 0, sMax: 10000, step: 10 },
     { key: "allocationRate", group: "detail", label: "キャパに対するシリアル抽選での割り当て割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "useRate", group: "detail", label: "CD売上枚数に対するシリアル使用率", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "slotsPerSerial", group: "detail", label: "1シリアルあたりの平均申し込み枠数", unit: "枠", hardMin: 1, hardMax: 10, sMin: 1, sMax: 4, step: 0.1 },
@@ -50,10 +53,11 @@ const LIVES = [
   const BLUE_SOFT = "#5da7d9";
   const BLUE_PALE = "#a9d0eb";
   const YELLOW = "#f6dc31";
+  const ORANGE = "#e8501f";
 
   const $ = (id) => document.getElementById(id);
   const select = $("live");
-  const state = { stack: DEFAULT_STACK, ...LIVES[0].params };
+  const state = { stack: DEFAULT_STACK, showLoss: false, ...LIVES[0].params };
   const inputs = {};
   let model = null;
   let winChart = null;
@@ -64,6 +68,7 @@ const LIVES = [
     return `${v > 0 && v < 0.1 ? v.toFixed(2) : v.toFixed(1)}%`;
   };
   const fmtNum = (x, digits = 0) => x.toLocaleString("ja-JP", { maximumFractionDigits: digits });
+  const fmtYen = (x) => `${fmtNum(Math.round(x))}円`;
 
   // 積み枚数 K = 1 + X とし、X が負の二項分布に従うものとする。平均は 1 + E[X]、分散は Var[X] なので、
   // 入力された平均 mean と分散 variance から、X の平均 μ = mean - 1 と r = μ² / (variance - μ) が決まる。
@@ -130,8 +135,10 @@ const LIVES = [
     }
 
     const winProb = (k) => (entryProb >= 1 ? 1 : -Math.expm1(k * Math.log1p(-entryProb)));
+    // 落選すると積んだCDの代金がすべて無駄になるとみなしたときの、無駄になる金額の期待値
+    const expectedLoss = (k) => state.cdPrice * k * (1 - winProb(k));
     const odds = entryProb > 0 ? 1 / entryProb : null;
-    return { seats, winners, serials, people, entryProb, odds, winProb, q, notice };
+    return { seats, winners, serials, people, entryProb, odds, winProb, expectedLoss, q, notice };
   }
 
   function chartRange() {
@@ -174,10 +181,28 @@ const LIVES = [
     const winOptions = baseOptions();
     winOptions.scales.y.max = 100;
     winOptions.scales.y.ticks = { callback: (v) => `${v}%` };
-    winOptions.plugins.tooltip.callbacks.label = (item) => `当選確率: ${fmtPct(item.parsed.y / 100)}`;
+    winOptions.scales.y.title = { display: true, text: "当選確率" };
+    winOptions.scales.y1 = {
+      position: "right",
+      beginAtZero: true,
+      grid: { drawOnChartArea: false },
+      title: { display: true, text: "期待損失額" },
+      ticks: { callback: (v) => `${fmtNum(v)}円` },
+    };
+    winOptions.plugins.legend = { display: false, labels: { boxWidth: 14, boxHeight: 2 } };
+    winOptions.plugins.tooltip.displayColors = true;
+    winOptions.plugins.tooltip.callbacks.label = (item) => (item.datasetIndex === 0
+      ? `当選確率: ${fmtPct(item.parsed.y / 100)}`
+      : `期待損失額: ${fmtYen(item.parsed.y)}`);
     winChart = new Chart($("win-chart"), {
       type: "line",
-      data: { labels: [], datasets: [{ data: [], borderColor: BLUE, borderWidth: 2.5, backgroundColor: "rgba(93, 167, 217, .2)", fill: true, tension: 0.25, pointBorderColor: BLUE, pointBorderWidth: 2 }] },
+      data: {
+        labels: [],
+        datasets: [
+          { label: "当選確率", yAxisID: "y", data: [], borderColor: BLUE, borderWidth: 2.5, backgroundColor: "rgba(93, 167, 217, .2)", fill: true, tension: 0.25, pointBorderColor: BLUE, pointBorderWidth: 2 },
+          { label: "期待損失額", yAxisID: "y1", data: [], borderColor: ORANGE, borderWidth: 2, backgroundColor: ORANGE, fill: false, tension: 0.25, pointBorderColor: ORANGE, pointBorderWidth: 2 },
+        ],
+      },
       options: winOptions,
     });
 
@@ -205,6 +230,14 @@ const LIVES = [
     win.pointRadius = ks.map((k) => (isCurrent(k) ? 7 : xmax <= 30 ? 3 : 0));
     win.pointHoverRadius = ks.map((k) => (isCurrent(k) ? 8 : 5));
     win.pointBackgroundColor = ks.map((k) => (isCurrent(k) ? YELLOW : "#fff"));
+    const loss = winChart.data.datasets[1];
+    loss.hidden = !state.showLoss;
+    winChart.options.scales.y1.display = state.showLoss;
+    winChart.options.plugins.legend.display = state.showLoss;
+    loss.data = ks.map((k) => model.expectedLoss(k));
+    loss.pointRadius = ks.map((k) => (isCurrent(k) ? 7 : xmax <= 30 ? 3 : 0));
+    loss.pointHoverRadius = ks.map((k) => (isCurrent(k) ? 8 : 5));
+    loss.pointBackgroundColor = ks.map((k) => (isCurrent(k) ? YELLOW : "#fff"));
     winChart.update();
 
     const dist = distChart.data.datasets[0];
@@ -217,13 +250,18 @@ const LIVES = [
 
   function render() {
     const prob = model.winProb(state.stack);
+    const loss = model.expectedLoss(state.stack);
     $("result-prob").textContent = fmtPct(prob);
+    $("result-loss").textContent = fmtYen(loss);
+    $("result-loss-card").hidden = !state.showLoss;
     $("stat-seats").textContent = `${fmtNum(model.seats, 1)}席`;
     $("stat-serials").textContent = `${fmtNum(model.serials)}枚`;
     $("stat-people").textContent = `${fmtNum(model.people)}人`;
     $("stat-serial-prob").textContent = fmtPct(model.entryProb);
     $("stat-odds").textContent = model.odds === null ? "-" : `${fmtNum(model.odds, 1)}倍`;
-    $("win-chart").setAttribute("aria-label", `積み枚数ごとの当選確率のグラフ。積み${state.stack}枚で${fmtPct(prob)}`);
+    $("win-chart").setAttribute("aria-label", state.showLoss
+      ? `積み枚数ごとの当選確率と期待損失額のグラフ。積み${state.stack}枚で当選確率${fmtPct(prob)}、期待損失額${fmtYen(loss)}`
+      : `積み枚数ごとの当選確率のグラフ。積み${state.stack}枚で${fmtPct(prob)}`);
     const warning = $("warning");
     warning.hidden = !model.notice;
     warning.textContent = model.notice;
@@ -273,7 +311,7 @@ const LIVES = [
       number.removeAttribute("aria-invalid");
       number.value = state[field.key];
     });
-    $(field.group === "main" ? "main-fields" : "detail-fields").append(wrapper);
+    $(`${field.group}-fields`).append(wrapper);
     setValue(field.key, state[field.key]);
   }
 
@@ -309,6 +347,17 @@ const LIVES = [
     if (live) applyLive(live);
   });
   FIELDS.forEach(createField);
+  const showLoss = $("show-loss");
+  const applyShowLoss = () => {
+    state.showLoss = showLoss.checked;
+    $("loss-fields").classList.toggle("is-disabled", !state.showLoss);
+    for (const input of $("loss-fields").querySelectorAll("input")) input.disabled = !state.showLoss;
+  };
+  showLoss.addEventListener("change", () => {
+    applyShowLoss();
+    update();
+  });
+  applyShowLoss();
   createCharts();
   select.value = LIVES[0].id;
   applyLive(LIVES[0]);

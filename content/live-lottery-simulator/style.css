@@ -161,6 +161,16 @@
 }
 .sim-result-label { color: var(--muted); font-size: .9rem; line-height: 1.5; }
 .sim-result-value { color: var(--blue); font-size: 1.7rem; font-weight: 700; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.sim-result-value-loss { color: #e8501f; }
+
+.sim-results { display: flex; flex-direction: column; gap: .6rem; margin-block: 1rem; }
+.sim-results .sim-result { margin: 0; }
+.sim-results .sim-result[hidden] { display: none; }
+
+.sim-check { display: flex; align-items: flex-start; gap: .5rem; margin-top: 1rem; font-size: .85rem; line-height: 1.6; cursor: pointer; }
+.sim-check input { flex: none; width: 1rem; height: 1rem; margin: .2rem 0 0; accent-color: var(--blue); cursor: pointer; }
+#loss-fields.is-disabled .sim-field { opacity: .45; }
+#loss-fields.is-disabled input { cursor: not-allowed; }
 
 .sim-chart {
   position: relative;

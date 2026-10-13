@@ -35,14 +35,22 @@ LIVE LOTTERY SIMULATOR
     <div id="detail-fields"></div>
     <p class="sim-subtitle">1人あたりの積み数の分布（負の二項分布）</p>
     <div class="sim-chart"><canvas id="dist-chart" role="img" aria-label="積み枚数の分布のグラフ"></canvas></div>
+    <label class="sim-check"><input type="checkbox" id="show-loss">期待損失額（落選して無駄になるCD代の期待値）を表示する</label>
+    <div id="loss-fields"></div>
   </div>
 </details>
 <p class="sim-warning" id="warning" hidden></p>
-<div class="sim-result" aria-live="polite">
-  <span class="sim-result-label">当選確率</span>
-  <span class="sim-result-value" id="result-prob">-</span>
+<div class="sim-results">
+  <div class="sim-result" aria-live="polite">
+    <span class="sim-result-label">当選確率</span>
+    <span class="sim-result-value" id="result-prob">-</span>
+  </div>
+  <div class="sim-result" id="result-loss-card" aria-live="polite" hidden>
+    <span class="sim-result-label">期待損失額</span>
+    <span class="sim-result-value sim-result-value-loss" id="result-loss">-</span>
+  </div>
 </div>
-<div class="sim-chart"><canvas id="win-chart" role="img" aria-label="積み枚数ごとの当選確率のグラフ"></canvas></div>
+<div class="sim-chart"><canvas id="win-chart" role="img" aria-label="積み枚数ごとの当選確率と期待損失額のグラフ"></canvas></div>
 <dl class="sim-stats">
   <div>
     <dt>シリアル抽選での割り当て席数</dt>
@@ -80,6 +88,7 @@ LIVE LOTTERY SIMULATOR
 | `$\beta$` | CD売上枚数に対するシリアル使用率 |
 | `$m$` | 1シリアルあたりの平均申し込み枠数 |
 | `$\mu,\ \sigma^2$` | 積み数の分布の平均と分散 |
+| `$c$` | CD単価 |
 
 ### 1. 割り当て席数と使用シリアル数
 
@@ -137,11 +146,20 @@ N\left(1 - \sum_{j\ge 1} q_j\,(1-p)^{j}\right) = W
 w(k) = 1 - (1-p)^{k}
 ```
 
+### 6. 期待損失額
+
+積み `$k$` 枚の人が落選した場合、積んだCDの代金 `$ck$` がすべて無駄になるものとして、その期待値 `$L(k)$` を求めます。
+
+```math
+L(k) = ck\,\bigl(1 - w(k)\bigr) = ck\,(1-p)^{k}
+```
+
 ### 簡略化している点
 
 - 各シリアルは互いに独立に、同じ確率 `$p$` で当選するものとします。
 - 当選時に消費する席数は、平均 `$m$` 席として扱います。申し込み枠数が小数でも、そのまま扱います。
 - 自分自身が応募者数や抽選結果に与える影響は、無視できるものとします。
+- 期待損失額では、当選した場合のCD代は損失とみなさず、CD自体や特典の価値も考慮していません。
 - 落選者の再抽選や、公演・枠ごとの席数の違いなど、抽選方式の細かな違いは考慮していません。
 
 </div>
