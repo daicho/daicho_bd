@@ -57,6 +57,11 @@ LIVE & EVENT HISTORY
 | 2026/9/19〜20 | ナガノアニエラフェスタ2026 | 駒場公園 |
 | 2026/9/22 | Morfonica LIVE「Movement」 | TACHIKAWA STAGE GARDEN |
 | 2026/9/25 | 夢限大みゅーたいぷ「新宿着陸計画」DAY2 | Zepp Shinjuku |
+| 2026/10/10 | ブシロードクリエイティブ -High!! 10sion School- | ベルサール秋葉原 |
+| 2026/10/10 | Poppin'Party「Now Roading♪♪」 | 東京ガーデンシアター |
+| 2026/10/11 | EXTEND STEP HOOOOPE! 番組イベント2026 | 科学技術館サイエンスホール |
+| 2026/10/11 | 夢限大みゅーたいぷ「DIMENSIONAL OVERLAP」 | 東京ガーデンシアター |
+| 2026/10/12 | RAISE A SUILEN「EXTREME EXPRESS」 | 東京ガーデンシアター |
 
 ## Links
 
