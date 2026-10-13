@@ -26,7 +26,7 @@ LIVE LOTTERY SIMULATOR
 <div class="sim-field">
   <label class="sim-label" for="live">ライブ</label>
   <div class="sim-select"><select id="live"></select></div>
-  <a class="sim-live-link" id="live-link" href="#" target="_blank" rel="noopener noreferrer" hidden>公式サイトを開く</a>
+  <a class="sim-live-link external-link" id="live-link" href="#" target="_blank" rel="noopener noreferrer" hidden>公式サイトを開く</a>
 </div>
 <div id="main-fields"></div>
 <details class="sim-details">

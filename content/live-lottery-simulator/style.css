@@ -32,7 +32,6 @@
 .sim-select select:focus-visible { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px #12659d33; }
 .sim-live-link { display: inline-block; margin-top: .3rem; font-size: .8rem; line-height: 1.5; }
 .sim-live-link[hidden] { display: none; }
-.sim-live-link::after { content: " ↗"; }
 
 .sim-control { display: flex; align-items: center; gap: 1rem; }
 .sim-num {
