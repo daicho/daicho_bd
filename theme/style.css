@@ -129,6 +129,18 @@ main { padding-block: 3.8rem 3rem; }
 .prose li::marker { color: var(--blue); }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin-block: 2.2rem; }
 .prose img { display: block; max-width: 100%; height: auto; border-radius: 12px; }
+.prose h1:has(> img) {
+  display: flex;
+  align-items: center;
+  gap: .6em;
+}
+.prose h1 > img {
+  flex: 0 0 auto;
+  width: 1.8em;
+  height: 1.8em;
+  object-fit: cover;
+  border-radius: 50%;
+}
 .prose blockquote {
   margin-inline: 0;
   padding: .2rem 1.2rem;
