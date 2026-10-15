@@ -8,7 +8,7 @@ og:
 A LITTLE ABOUT ME
 :::
 
-# ![アイコン](./image/icon.jpg) だいちょ / daicho
+# ![](./image/icon.jpg) だいちょ / daicho
 
 長野の東の方に生息しているオタクです。
 
@@ -16,7 +16,6 @@ A LITTLE ABOUT ME
 ## ToDo
 
 - グッズ紹介（リンク追加も）
-- リンクカードにアイコン付ける
 -->
 
 ## プロフィール
@@ -130,19 +129,19 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 ## Links
 
 ::: link
-[X（アニメ・ライブ）](https://x.com/daicho_bd)
+[![](./image/links/x.png) X（アニメ・ライブ）](https://x.com/daicho_bd)
 @daicho_bd
 アニメ系の話題をつぶやきます。
 :::
 
 ::: link
-[X（その他の趣味）](https://x.com/daicho_sub)
+[![](./image/links/x.png) X（その他の趣味）](https://x.com/daicho_sub)
 @daicho_sub
 けん玉や競プロなど、アニメ以外の話はこちら。
 :::
 
 ::: link
-[YouTube](https://www.youtube.com/@%E3%81%A0%E3%81%84%E3%81%A1%E3%82%87-bd)
+[![](./image/links/youtube.png) YouTube](https://www.youtube.com/@%E3%81%A0%E3%81%84%E3%81%A1%E3%82%87-bd)
 @だいちょ-bd
 アワーノーツのプレイ動画とか上げるかも？
 :::
@@ -154,7 +153,7 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 :::
 
 ::: link
-[AtCoder](https://atcoder.jp/users/daicho)
+[![](./image/links/atcoder.png) AtCoder](https://atcoder.jp/users/daicho)
 @daicho
 日々衰えを感じながらもがいています。
 :::
