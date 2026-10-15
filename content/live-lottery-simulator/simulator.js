@@ -8,7 +8,7 @@ const LIVES = [
     url: "https://bang-dream.com/events/millsage_1st/",
     params: {
       capacity: 500,
-      cdSales: 20000,
+      cdSales: 23000,
       allocationRate: 80,
       useRate: 75,
       slotsPerSerial: 1.5,
@@ -23,7 +23,7 @@ const LIVES = [
     url: "https://bang-dream.com/events/ikka-dumb-rock_1st/",
     params: {
       capacity: 700,
-      cdSales: 18000,
+      cdSales: 19000,
       allocationRate: 80,
       useRate: 75,
       slotsPerSerial: 1.5,
