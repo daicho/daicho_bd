@@ -147,15 +147,15 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 :::
 
 ::: link
-[イベンターノート](https://www.eventernote.com/users/daicho)
-@daicho
-イベンターノートって神サービスですよね。
-:::
-
-::: link
 [![](./image/links/atcoder.png) AtCoder](https://atcoder.jp/users/daicho)
 @daicho
 日々衰えを感じながらもがいています。
+:::
+
+::: link
+[イベンターノート](https://www.eventernote.com/users/daicho)
+@daicho
+イベンターノートって神サービスですよね。
 :::
 
 ::: link
