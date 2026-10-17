@@ -199,6 +199,53 @@ function metadataImage(href, source, files, siteUrl) {
   return image.href;
 }
 
+function youtubeVideo(href) {
+  let url;
+  try {
+    url = new URL(href);
+  } catch {
+    return undefined;
+  }
+  if (url.protocol !== "https:" || url.username || url.password) return undefined;
+
+  const host = url.hostname.toLowerCase();
+  let videoId;
+  let isShort = false;
+  if (host === "youtu.be" || host === "www.youtu.be") {
+    const match = url.pathname.match(/^\/([a-z\d_-]{11})\/?$/i);
+    videoId = match?.[1];
+  } else if (["youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com"].includes(host)) {
+    if (url.pathname === "/watch") {
+      videoId = url.searchParams.get("v") ?? undefined;
+    } else {
+      const match = url.pathname.match(/^\/(?:embed|shorts|live)\/([a-z\d_-]{11})\/?$/i);
+      videoId = match?.[1];
+      isShort = url.pathname.startsWith("/shorts/");
+    }
+  }
+  return /^[a-z\d_-]{11}$/i.test(videoId ?? "") ? { videoId, isShort } : undefined;
+}
+
+function applyNewTabLinkMarkers(children) {
+  const openLinks = [];
+  for (let index = 0; index < children.length; index++) {
+    const token = children[index];
+    if (token.type === "link_open") {
+      openLinks.push(token);
+      continue;
+    }
+    if (token.type !== "link_close") continue;
+
+    const link = openLinks.pop();
+    const marker = children[index + 1];
+    if (marker?.type !== "text" || !marker.content.startsWith("{new-tab}")) continue;
+    link.attrJoin("class", "external-link");
+    link.attrSet("target", "_blank");
+    link.attrSet("rel", "noopener noreferrer");
+    marker.content = marker.content.slice("{new-tab}".length);
+  }
+}
+
 function createMarkdown(files) {
   const md = new MarkdownIt({ breaks: true, html: true, linkify: true, typographer: false });
   for (const name of ["link", "note"]) {
@@ -216,6 +263,7 @@ function createMarkdown(files) {
       : "</div>\n",
   });
   md.use(container, "tweet", { validate: (params) => params.trim() === "tweet" });
+  md.use(container, "youtube", { validate: (params) => params.trim() === "youtube" });
   // tweet ブロックは投稿 URL 一つだけを許可し、埋め込み用 HTML に置き換える
   md.core.ruler.push("site-tweets", (state) => {
     for (let index = 0; index < state.tokens.length; index++) {
@@ -242,6 +290,28 @@ function createMarkdown(files) {
       state.env.hasTweets = true;
     }
   });
+  // youtube ブロックは動画 URL 一つだけを許可し、プライバシー強化モードの埋め込みに置き換える
+  md.core.ruler.push("site-youtube", (state) => {
+    for (let index = 0; index < state.tokens.length; index++) {
+      const token = state.tokens[index];
+      if (token.type !== "container_youtube_open") continue;
+      const content = state.tokens[index + 2];
+      const video = youtubeVideo(content?.content.trim());
+      if (state.tokens[index + 1]?.type !== "paragraph_open"
+        || content?.type !== "inline"
+        || state.tokens[index + 3]?.type !== "paragraph_close"
+        || state.tokens[index + 4]?.type !== "container_youtube_close"
+        || !video) {
+        throw new Error(`${state.env.source}:${token.map[0] + 1 + state.env.lineOffset}: A "youtube" block must contain exactly one YouTube video URL.`);
+      }
+      const embed = new state.Token("html_block", "", 0);
+      embed.block = true;
+      embed.content = `<div class="youtube-embed${video.isShort ? " youtube-embed-short" : ""}">
+<iframe src="https://www.youtube-nocookie.com/embed/${video.videoId}" title="YouTube video player" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>\n`;
+      state.tokens.splice(index, 5, embed);
+    }
+  });
   md.core.ruler.push("site-links-and-headings", (state) => {
     const usedIds = new Set();
     state.tokens.forEach((token, index) => {
@@ -255,6 +325,7 @@ function createMarkdown(files) {
         usedIds.add(id);
         token.attrSet("id", id);
       }
+      if (token.type === "inline") applyNewTabLinkMarkers(token.children);
       const visit = (child) => {
         for (const attr of ["href", "src"]) {
           const value = child.attrGet(attr);

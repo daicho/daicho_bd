@@ -151,6 +151,26 @@ main { padding-block: 3.8rem 3rem; }
 .tweet-embed { margin-block: 1.5rem; }
 .prose .tweet-embed blockquote { padding: 0; border: 0; }
 .tweet-embed .twitter-tweet { margin-inline: auto; max-width: 100%; }
+.youtube-embed {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 16 / 9;
+  margin-block: 1.5rem;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.youtube-embed iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.youtube-embed-short {
+  max-width: 540px;
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
+}
 .prose code { padding: .15em .4em; border-radius: 4px; background: #d8eaf6; font-size: .9em; }
 .prose pre { overflow-x: auto; padding: 1.2rem; border-radius: 12px; background: #d8eaf6; }
 .prose pre code { padding: 0; background: transparent; }

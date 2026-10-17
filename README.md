@@ -92,6 +92,12 @@ twitter:
 リンクされていないMarkdownも公開されます。下書きや秘密情報は `content` に置かないでください。
 存在しないローカルページ・画像・ファイルへのリンクや、同じURLになるファイル（例: `notes.md` と `notes/index.md`）はビルドエラーにします。
 
+内部リンクを新しいタブで開く場合は、リンク直後に `{new-tab}` を付けます。外部リンクと同じアイコンも表示されます。
+
+```markdown
+[自己紹介](about.md){new-tab}
+```
+
 ### ページラベル
 
 `::: label` ブロックを置いた位置にページラベルを表示できます。ブロックを置かなければ、ページラベルは表示されません。
@@ -160,6 +166,22 @@ https://x.com/your_handle/status/1234567890123456789
 
 埋め込みがあるページだけX公式のスクリプトを読み込み、閲覧時にXへの外部通信が発生します。
 JavaScriptが無効・ブロックされている場合は「Xでポストを見る」リンクが表示されます。
+
+### YouTube動画の埋め込み
+
+`::: youtube` ブロック内に動画URLを1つだけ書くと、YouTube動画を埋め込めます。
+
+```markdown
+::: youtube
+https://www.youtube.com/watch?v=w-Gvclnnfpc
+:::
+```
+
+`youtu.be` の短縮URL、`youtube.com/shorts/`、`youtube.com/live/` のURLにも対応します。
+動画以外のURLや、URL以外の文章・複数のURLを含むブロックはビルドエラーになります。
+`youtube.com/shorts/` のURLは、Shorts向けの縦長（9:16）で表示されます。
+
+埋め込みはYouTubeのプライバシー強化モードを使用します。動画を埋め込んだページの閲覧時には、YouTubeへの外部通信が発生します。
 
 ### 画像・添付ファイル
 
