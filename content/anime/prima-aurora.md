@@ -1,6 +1,10 @@
 ---
 og:
   type: article
+  image: ./image/prima-aurora.jpg
+  imageAlt: 入場特典
+twitter:
+  card: summary_large_image
 ---
 
 ::: label
