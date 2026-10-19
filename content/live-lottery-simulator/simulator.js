@@ -38,9 +38,9 @@ const LIVES = [
   "use strict";
 
   const FIELDS = [
-    { key: "capacity", group: "main", label: "キャパ", unit: "人", hardMin: 1, hardMax: 1e6, sMin: 100, sMax: 50000, step: 10 },
-    { key: "cdSales", group: "main", label: "CD売上枚数", unit: "枚", hardMin: 1, hardMax: 1e7, sMin: 1000, sMax: 100000, step: 100 },
-    { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 1000, sMin: 1, sMax: 50, step: 1, int: true },
+    { key: "capacity", group: "main", label: "キャパ", unit: "人", hardMin: 1, hardMax: 1e6, sMin: 100, sMax: 30000, step: 10 },
+    { key: "cdSales", group: "main", label: "CD売上枚数", unit: "枚", hardMin: 1, hardMax: 1e7, sMin: 1000, sMax: 50000, step: 100 },
+    { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 1000, sMin: 1, sMax: 100, step: 1, int: true },
     { key: "cdPrice", group: "loss", label: "CD単価", unit: "円", hardMin: 0, hardMax: 100000, sMin: 0, sMax: 10000, step: 10 },
     { key: "allocationRate", group: "detail", label: "キャパに対するシリアル抽選での割り当て割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "useRate", group: "detail", label: "CD売上枚数に対するシリアル使用率", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
