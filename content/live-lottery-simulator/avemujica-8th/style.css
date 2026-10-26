@@ -132,13 +132,12 @@
 
 .sim-results { display: flex; flex-direction: column; gap: .6rem; margin-block: 1rem; }
 .sim-results .sim-result { margin: 0; }
-.sim-results-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sim-results-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .sim-results-grid .sim-result { flex-direction: column; align-items: flex-start; gap: 0; }
 .sim-results-grid .sim-result-label { white-space: nowrap; }
 .sim-swatch { display: inline-block; width: .8rem; height: 3px; margin-right: .4rem; border-radius: 2px; vertical-align: middle; }
 .sim-swatch-s { background: #c2185b; }
 .sim-swatch-a { background: #e8501f; }
-.sim-swatch-t { background: #6a3fb5; }
 .sim-swatch-g { background: #12659d; }
 
 .sim-check { display: flex; align-items: flex-start; gap: .5rem; margin-block: .9rem; font-size: .85rem; line-height: 1.6; cursor: pointer; }

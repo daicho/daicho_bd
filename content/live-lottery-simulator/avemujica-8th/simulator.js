@@ -5,14 +5,13 @@ const DEFAULTS = {
   seatsS: 4000,
   seatsA: 5000,
   seatsG: 11000,
-  throughRate: 50,
   allocationRate: 80,
-  useRate: 75,
+  useRate: 80,
   rateSA: 50,
   rateAS: 10,
   rateSOnly: 5,
   rateAOnly: 10,
-  slotsPerSerial: 1.5,
+  slotsPerSerial: 2,
   stackMean: 2.5,
   stackVariance: 20.0,
 };
@@ -22,19 +21,18 @@ const DEFAULTS = {
 
   const FIELDS = [
     { key: "cdSales", group: "main", label: "CD売上枚数", unit: "枚", hardMin: 1, hardMax: 1e7, sMin: 1000, sMax: 50000, step: 1000 },
+    { key: "stackMean", group: ["main", "stack"], label: "1人あたりの積み数の平均", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 10, step: 0.1 },
     { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 1000, sMin: 1, sMax: 100, step: 1, int: true },
-    { key: "seatsS", group: "seat", label: "S席の席数（1公演あたり）", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
-    { key: "seatsA", group: "seat", label: "A席の席数（1公演あたり）", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
-    { key: "seatsG", group: "seat", label: "一般指定席の席数（1公演あたり）", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
-    { key: "throughRate", group: "seat", label: "一般指定席のうち通しに回す割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
+    { key: "seatsS", group: "seat", label: "S席の席数", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
+    { key: "seatsA", group: "seat", label: "A席の席数", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
+    { key: "seatsG", group: "seat", label: "一般指定席の席数", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
     { key: "allocationRate", group: "seat", label: "最速先行に割り当てる割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "useRate", group: "entry", label: "CD売上枚数に対するシリアル使用率", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "rateSA", group: "entry", label: "応募者のうち、S第1希望・A第2希望の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "rateAS", group: "entry", label: "応募者のうち、A第1希望・S第2希望の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "rateSOnly", group: "entry", label: "応募者のうち、Sのみの人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "rateAOnly", group: "entry", label: "応募者のうち、Aのみの人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "slotsPerSerial", group: "entry", label: "1申し込みあたりの平均枚数", unit: "枚", hardMin: 1, hardMax: 10, sMin: 1, sMax: 4, step: 0.1 },
-    { key: "stackMean", group: "stack", label: "1人あたりの積み数の平均", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 10, step: 0.1 },
+    { key: "rateSA", group: "entry", label: "第1希望S席・第2希望A席の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
+    { key: "rateAS", group: "entry", label: "第1希望A席・第2希望S席の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
+    { key: "rateSOnly", group: "entry", label: "S席のみ応募の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
+    { key: "rateAOnly", group: "entry", label: "A席のみ応募の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
+    { key: "slotsPerSerial", group: "entry", label: "1シリアルあたりの平均申し込み枚数（連番席数）", unit: "枚", hardMin: 1, hardMax: 10, sMin: 1, sMax: 4, step: 0.1 },
     { key: "stackVariance", group: "stack", label: "1人あたりの積み数の分散", unit: "", hardMin: 0, hardMax: 1000, sMin: 0, sMax: 100, step: 0.1 },
   ];
   const MAX_K = 20000;
@@ -45,7 +43,6 @@ const DEFAULTS = {
   const LINES = [
     { key: "s", label: "S席", color: "#c2185b" },
     { key: "a", label: "A席", color: "#e8501f" },
-    { key: "t", label: "通し", color: "#6a3fb5" },
     { key: "g", label: "一般", color: BLUE },
   ];
 
@@ -57,9 +54,10 @@ const DEFAULTS = {
   let distChart = null;
 
   const fmtPct = (x) => {
-    const v = x * 100;
+    const v = Math.min(x * 100, 99.9);
     return `${v > 0 && v < 0.1 ? v.toFixed(2) : v.toFixed(1)}%`;
   };
+  const fmtRatio = (x) => `${(x * 100).toFixed(1)}%`;
   const fmtNum = (x, digits = 0) => x.toLocaleString("ja-JP", { maximumFractionDigits: digits });
   // (1-p)^k と 1-(1-p)^k を、p が小さいときも精度よく計算する
   const lose = (p, k) => (p >= 1 ? 0 : Math.exp(k * Math.log1p(-p)));
@@ -122,7 +120,6 @@ const DEFAULTS = {
 
   function calculate() {
     const alloc = state.allocationRate / 100;
-    const through = state.throughRate / 100;
     const m = state.slotsPerSerial;
     const serials = (state.cdSales * state.useRate) / 100;
     const { q, notice: distNotice } = buildDistribution(state.stackMean, state.stackVariance);
@@ -141,8 +138,7 @@ const DEFAULTS = {
     const weights = (fn) => q.map((qk, k) => (k === 0 ? 0 : people * qk * fn(k)));
     const seatsS = state.seatsS * alloc;
     const seatsA = state.seatsA * alloc;
-    const seatsT = state.seatsG * through * alloc;
-    const seatsG = state.seatsG * (1 - through) * alloc;
+    const seatsG = state.seatsG * alloc;
 
     // S/A受付（ボストン方式）：第1希望だけで抽選し、残った席を第2希望で抽選する
     const s1 = solve(weights(() => rSA + rS), seatsS / m);
@@ -160,31 +156,19 @@ const DEFAULTS = {
       [rA, (k) => lose(a1.p, k)],
       [rNone, () => 1],
     ];
-    const mix = (fn) => (k) => patterns.reduce((sum, [rate, ell]) => sum + rate * fn(ell(k), k), 0);
+    const mix = (fn) => (k) => patterns.reduce((sum, [rate, ell]) => sum + rate * fn(ell(k)), 0);
 
-    // 通し：両日ともS/A受付で落選した人が対象
-    const t = solve(weights(mix((ell) => ell * ell)), seatsT / m);
-    // 一般：その日のS/A受付と通しの両方で落選した人が対象
-    const g = solve(weights(mix((ell, k) => ell - ell * ell * win(t.p, k))), seatsG / m);
+    // 一般：その日のS/A受付で落選した人が対象
+    const g = solve(weights(mix((ell) => ell)), seatsG / m);
 
     // 自分の当選確率は、ほかの受付での当落とは独立な、最終的な選別前の確率として扱う
     const winProbs = (k) => {
       const [s, a] = state.aFirst ? [win(s2.p, k), win(a1.p, k)] : [win(s1.p, k), win(a2.p, k)];
-      const tw = win(t.p, k);
       const gw = win(g.p, k);
-      const ell = (1 - s) * (1 - a);
-      return { s, a, t: tw, g: gw, total: 1 - ell + ell * ell * tw + (ell - ell * ell * tw) * gw };
+      return { s, a, g: gw };
     };
 
-    const stages = [
-      { id: "s1", seats: seatsS, ...s1 },
-      { id: "s2", seats: leftS, ...s2 },
-      { id: "a1", seats: seatsA, ...a1 },
-      { id: "a2", seats: leftA, ...a2 },
-      { id: "t", seats: seatsT, ...t },
-      { id: "g", seats: seatsG, ...g },
-    ];
-    return { serials, people, rNone, stages, winProbs, q, notice: notices.join("\n") };
+    return { serials, people, winProbs, q, notice: notices.join("\n") };
   }
 
   function chartRange() {
@@ -252,7 +236,7 @@ const DEFAULTS = {
 
     const distOptions = baseOptions();
     distOptions.scales.y.ticks = { callback: (v) => `${v}%` };
-    distOptions.plugins.tooltip.callbacks.label = (item) => `割合: ${fmtPct(item.parsed.y / 100)}`;
+    distOptions.plugins.tooltip.callbacks.label = (item) => `割合: ${fmtRatio(item.parsed.y / 100)}`;
     distChart = new Chart($("dist-chart"), {
       type: "bar",
       data: { labels: [], datasets: [{ data: [], borderRadius: 2 }] },
@@ -272,7 +256,7 @@ const DEFAULTS = {
     winChart.data.labels = ks;
     LINES.forEach((line, i) => {
       const dataset = winChart.data.datasets[i];
-      dataset.data = probs.map((p) => p[line.key] * 100);
+      dataset.data = probs.map((p) => Math.min(p[line.key] * 100, 99.9));
       dataset.pointRadius = ks.map((k) => (isCurrent(k) ? 6 : xmax <= 30 ? 2.5 : 0));
       dataset.pointHoverRadius = ks.map((k) => (isCurrent(k) ? 7 : 5));
       dataset.pointBackgroundColor = ks.map((k) => (isCurrent(k) ? YELLOW : "#fff"));
@@ -290,15 +274,8 @@ const DEFAULTS = {
   function render() {
     const probs = model.winProbs(state.stack);
     for (const line of LINES) $(`result-${line.key}`).textContent = fmtPct(probs[line.key]);
-    $("result-total").textContent = fmtPct(probs.total);
     $("stat-serials").textContent = `${fmtNum(model.serials)}枚`;
     $("stat-people").textContent = `${fmtNum(model.people)}人`;
-    $("stat-none").textContent = fmtPct(model.rNone);
-    for (const stage of model.stages) {
-      $(`stage-${stage.id}-seats`).textContent = `${fmtNum(stage.seats, 1)}席`;
-      $(`stage-${stage.id}-prob`).textContent = fmtPct(stage.p);
-      $(`stage-${stage.id}-odds`).textContent = stage.p > 0 ? `${fmtNum(1 / stage.p, 1)}倍` : "-";
-    }
     $("win-chart").setAttribute("aria-label", `積み枚数ごとの当選確率のグラフ。積み${state.stack}枚で${
       LINES.map((line) => `${line.label}${fmtPct(probs[line.key])}`).join("、")}`);
     const warning = $("warning");
@@ -314,15 +291,24 @@ const DEFAULTS = {
 
   function setValue(key, value, source) {
     state[key] = value;
-    const { range, number } = inputs[key];
-    if (source !== range) range.value = value;
-    if (source !== number) number.value = value;
-    const span = range.max - range.min;
-    range.style.setProperty("--pct", `${Math.min(100, Math.max(0, ((value - range.min) / span) * 100))}%`);
+    for (const { range, number } of inputs[key]) {
+      if (source !== range) range.value = value;
+      if (source !== number) number.value = value;
+      number.removeAttribute("aria-invalid");
+      const span = range.max - range.min;
+      range.style.setProperty("--pct", `${Math.min(100, Math.max(0, ((value - range.min) / span) * 100))}%`);
+    }
   }
 
+  // 同じ項目を複数のグループに表示する場合は、すべての入力欄を連動させる
   function createField(field) {
-    const id = `field-${field.key}`;
+    inputs[field.key] = [];
+    for (const group of [].concat(field.group)) createControl(field, group);
+    setValue(field.key, state[field.key]);
+  }
+
+  function createControl(field, group) {
+    const id = `field-${field.key}-${group}`;
     const wrapper = document.createElement("div");
     wrapper.className = "sim-field";
     wrapper.innerHTML = `<label class="sim-label" for="${id}">${field.label}</label>
@@ -331,18 +317,19 @@ const DEFAULTS = {
 <div class="sim-num"><input type="number" id="${id}" inputmode="decimal" min="${field.hardMin}" max="${field.hardMax}" step="${field.step}"><span class="sim-unit">${field.unit}</span></div>
 </div>`;
     const [range, number] = wrapper.querySelectorAll("input");
-    inputs[field.key] = { range, number };
+    inputs[field.key].push({ range, number });
     range.addEventListener("input", () => {
       setValue(field.key, Number(range.value), range);
-      number.removeAttribute("aria-invalid");
       update();
     });
     number.addEventListener("input", () => {
       const value = Number(number.value);
       const valid = number.value.trim() !== "" && Number.isFinite(value)
         && value >= field.hardMin && value <= field.hardMax && (!field.int || Number.isInteger(value));
-      number.setAttribute("aria-invalid", String(!valid));
-      if (!valid) return;
+      if (!valid) {
+        number.setAttribute("aria-invalid", "true");
+        return;
+      }
       setValue(field.key, value, number);
       update();
     });
@@ -350,8 +337,7 @@ const DEFAULTS = {
       number.removeAttribute("aria-invalid");
       number.value = state[field.key];
     });
-    $(`${field.group}-fields`).append(wrapper);
-    setValue(field.key, state[field.key]);
+    $(`${group}-fields`).append(wrapper);
   }
 
   // Markdownでは、```math のコードブロックを数式ブロック、`$...$` のインラインコードを行内数式として KaTeX で描画する

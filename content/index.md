@@ -109,7 +109,7 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 ## ツール
 
 - [バンドリ！ライブ当選確率シミュレーター](live-lottery-simulator/index.md)
-- [Ave Mujica 8th LIVE 当選確率シミュレーター](avemujica-8th-lottery-simulator/index.md)
+- [Ave Mujica 8th LIVE 当選確率シミュレーター](live-lottery-simulator/avemujica-8th/index.md)
 
 ## その他の趣味
 
