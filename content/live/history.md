@@ -62,6 +62,9 @@ LIVE & EVENT HISTORY
 | 2026/10/11 | EXTEND STEP HOOOOPE! 番組イベント2026 | 科学技術館サイエンスホール |
 | 2026/10/11 | 夢限大みゅーたいぷ「DIMENSIONAL OVERLAP」 | 東京ガーデンシアター |
 | 2026/10/12 | RAISE A SUILEN「EXTREME EXPRESS」 | 東京ガーデンシアター |
+| 2026/10/24 | 声グラハロウィーン2026 | 東京総合美容専門学校 |
+| 2026/10/24 | Ave Mujica 7th LIVE「Virtus」DAY1 | 京王アリーナ TOKYO |
+| 2026/10/25 | Bushiroad Fashion Journey | Shibuya Hikarie |
 
 ## Links
 

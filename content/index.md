@@ -57,9 +57,6 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 
 | 日付 | イベント | 会場 |
 | --- | --- | --- |
-| 2026/10/24 | 声グラハロウィーン2026 | 東京総合美容専門学校 |
-| 2026/10/24 | Ave Mujica 7th LIVE「Virtus」DAY1 | 京王アリーナ TOKYO |
-| 2026/10/25 | Bushiroad Fashion Journey | Shibuya Hikarie |
 | 2026/11/3 | ガールズバンドクライ Special LIVE “赤色の響祭” | ぴあアリーナMM |
 | 2026/11/14〜15 | MyGO!!!!! 9th LIVE「つなぎ目の向こうに」 - 神戸再景編 - | ワールド記念ホール |
 | 2026/12/12 | 朗読劇「綴結」 | 六行会ホール |
@@ -69,9 +66,13 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 | 2027/1/8 | ブシロード新春大発表会2027 | Kanadevia Hall |
 | 2027/1/9 | Morfonica LIVE「eleganza」 | Kanadevia Hall |
 | 2027/1/11 | millsage×一家Dumb Rock! SPECIAL LIVE | Kanadevia Hall |
+| 2027/3/25 | 夢限大みゅーたいぷ LIVE TOUR 2027「YMMTric COUNTER POINT」東京公演 | Zepp DiverCity (TOKYO) |
+| 2027/5/29〜30 | Ave Mujica 8th LIVE「Discrimen Fati」 | Kアリーナ横浜 |
 | 2027/6/12〜13 | ブシロード20周年記念ライブ | 横浜アリーナ |
 
 ※まだ当たっていないものも含まれます。当たれ！
+
+ライブ・イベント参加歴は **[こちら](live/history.md)**。
 
 ## アワーノーツについて
 
@@ -88,7 +89,7 @@ Xでは、ライブレポやアニメ実況、グッズ報告など色々つぶ�
 
 ![アワーノーツ プロフィール](./image/profile.jpg)
 
-ストーリーの感想は [こちら](our-notes/stories.md) にまとめています。
+ストーリーの感想は **[こちら](our-notes/stories.md)** にまとめています。
 
 ## 好きなものまとめ
 
