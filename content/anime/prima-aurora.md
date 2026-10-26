@@ -76,7 +76,7 @@ https://www.youtube.com/shorts/zSOSwGqkJhQ
 
 そして定治失脚後、勝浦社長にsumimiの2人が呼び出され。
 
-> 初華「私、sumimi辞めます。」
+> 初華「私、sumimiを辞めます。」
 
 ………………………………………は？
 嘘だよな……？
@@ -126,7 +126,7 @@ https://www.youtube.com/shorts/uEIZjKCIFCo
 会場は日比谷…もとい寿々谷音楽堂かな？
 ムジカといえば、箱庭＝室内のイメージがあったので、野外というのは新鮮でした
 
-> 『ようこそ新しいAve Mujicaの世界へ』
+> ‘ようこソ　本当ノ Ave Mujica ノ世界ヘ'
 > （「BADDY BADDY」より）
 
 「BADDY BADDY」の曲調といい、独立し箱庭から解き放たれた新しいムジカという感じがしました
