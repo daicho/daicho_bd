@@ -8,12 +8,12 @@ const DEFAULTS = {
   allocationRate: 80,
   useRate: 80,
   rateSA: 50,
-  rateAS: 10,
+  rateAS: 5,
   rateSOnly: 5,
   rateAOnly: 10,
   slotsPerSerial: 2,
   stackMean: 2.5,
-  stackVariance: 20.0,
+  stackVariance: 10,
 };
 
 (() => {
@@ -22,6 +22,7 @@ const DEFAULTS = {
   const FIELDS = [
     { key: "cdSales", group: "main", label: "CD売上枚数", unit: "枚", hardMin: 1, hardMax: 1e7, sMin: 1000, sMax: 50000, step: 1000 },
     { key: "stackMean", group: ["main", "stack"], label: "1人あたりの積み数の平均", unit: "枚", hardMin: 1, hardMax: 100, sMin: 1, sMax: 10, step: 0.1 },
+    { key: "slotsPerSerial", group: "main", label: "1シリアルあたりの平均申し込み枚数（連番席数）", unit: "枚", hardMin: 1, hardMax: 10, sMin: 1, sMax: 4, step: 0.1 },
     { key: "stack", group: "main", label: "積み枚数", unit: "枚", hardMin: 1, hardMax: 1000, sMin: 1, sMax: 100, step: 1, int: true },
     { key: "seatsS", group: "seat", label: "S席の席数", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
     { key: "seatsA", group: "seat", label: "A席の席数", unit: "席", hardMin: 0, hardMax: 1e5, sMin: 0, sMax: 20000, step: 100 },
@@ -32,7 +33,6 @@ const DEFAULTS = {
     { key: "rateAS", group: "entry", label: "第1希望A席・第2希望S席の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "rateSOnly", group: "entry", label: "S席のみ応募の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
     { key: "rateAOnly", group: "entry", label: "A席のみ応募の人の割合", unit: "%", hardMin: 0, hardMax: 100, sMin: 0, sMax: 100, step: 1 },
-    { key: "slotsPerSerial", group: "entry", label: "1シリアルあたりの平均申し込み枚数（連番席数）", unit: "枚", hardMin: 1, hardMax: 10, sMin: 1, sMax: 4, step: 0.1 },
     { key: "stackVariance", group: "stack", label: "1人あたりの積み数の分散", unit: "", hardMin: 0, hardMax: 1000, sMin: 0, sMax: 100, step: 0.1 },
   ];
   const MAX_K = 20000;
