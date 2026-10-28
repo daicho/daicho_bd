@@ -19,9 +19,7 @@ body {
   margin: 0;
   min-width: 280px;
   min-height: 100vh;
-  background:
-    linear-gradient(128deg, transparent 58%, #d7ebf860 58%, #d7ebf860 74%, transparent 74%),
-    radial-gradient(ellipse at 10% 0%, #fff 0%, transparent 65%);
+  background: radial-gradient(ellipse at 10% 0%, #fff 0%, transparent 65%);
   background-attachment: fixed;
 }
 body::before {
