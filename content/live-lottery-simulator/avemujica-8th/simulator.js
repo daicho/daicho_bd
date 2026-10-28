@@ -1,6 +1,6 @@
 // 初期値。席数は1公演あたり、割合系は %、stackMean / stackVariance は積み数の分布（1 + 負の二項分布）の平均と分散です。
 const DEFAULTS = {
-  cdSales: 25000,
+  cdSales: 17000,
   stack: 1,
   seatsS: 4000,
   seatsA: 5000,
@@ -12,7 +12,7 @@ const DEFAULTS = {
   rateSOnly: 5,
   rateAOnly: 10,
   slotsPerSerial: 2,
-  stackMean: 2.5,
+  stackMean: 2,
   stackVariance: 10,
 };
 
