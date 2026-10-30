@@ -8,7 +8,7 @@ og:
 A LITTLE ABOUT ME
 :::
 
-# ![](./image/icon_20261026.jpg) だいちょ / daicho
+# ![](./image/icon_20261030.webp){no-clip} だいちょ / daicho
 
 長野の東の方に生息しているオタクです。
 

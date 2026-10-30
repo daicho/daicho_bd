@@ -139,6 +139,12 @@ main { padding-block: 3.8rem 3rem; }
   object-fit: cover;
   border-radius: 50%;
 }
+.prose h1 > img.no-clip {
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  border-radius: 0;
+}
 .prose blockquote {
   margin-inline: 0;
   padding: .2rem 1.2rem;

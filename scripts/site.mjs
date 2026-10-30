@@ -246,6 +246,15 @@ function applyNewTabLinkMarkers(children) {
   }
 }
 
+function applyNoClipImageMarkers(children) {
+  for (let index = 0; index < children.length - 1; index++) {
+    const marker = children[index + 1];
+    if (children[index].type !== "image" || marker.type !== "text" || !marker.content.startsWith("{no-clip}")) continue;
+    children[index].attrJoin("class", "no-clip");
+    marker.content = marker.content.slice("{no-clip}".length);
+  }
+}
+
 function createMarkdown(files) {
   const md = new MarkdownIt({ breaks: true, html: true, linkify: true, typographer: false });
   for (const name of ["link", "note"]) {
@@ -314,6 +323,9 @@ function createMarkdown(files) {
   });
   md.core.ruler.push("site-links-and-headings", (state) => {
     const usedIds = new Set();
+    for (const token of state.tokens) {
+      if (token.type === "inline") applyNoClipImageMarkers(token.children);
+    }
     state.tokens.forEach((token, index) => {
       if (token.type === "heading_open") {
         const text = inlineText(state.tokens[index + 1]);
