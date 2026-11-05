@@ -65,6 +65,7 @@ LIVE & EVENT HISTORY
 | 2026/10/24 | 声グラハロウィーン2026 | 東京総合美容専門学校 |
 | 2026/10/24 | Ave Mujica 7th LIVE「Virtus」DAY1 | 京王アリーナ TOKYO |
 | 2026/10/25 | Bushiroad Fashion Journey | Shibuya Hikarie |
+| 2026/11/3 | ガールズバンドクライ Special LIVE “赤色の響祭” | ぴあアリーナMM |
 
 ## Links
 
