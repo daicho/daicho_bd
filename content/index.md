@@ -34,6 +34,7 @@ MyGO!!!!!を好きになって以来、ライブにもよく行くようにな�
 - sumimi
 - [バンドリ！アワーノーツ](#アワーノーツについて)
 - [はなまきこもちぃ](https://hanakomo.secondshot.jp/)
+- 三郷りん（[つにてんてん](https://azumino221010.bitfan.id/)）
 
 ## スタンス
 
