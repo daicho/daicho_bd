@@ -67,6 +67,7 @@ LIVE & EVENT HISTORY
 | 2026/10/25 | Bushiroad Fashion Journey | Shibuya Hikarie |
 | 2026/11/1 | つにてんてん デビュー1周年記念『つにてん展』 | 穂高交流学習センターみらい |
 | 2026/11/3 | ガールズバンドクライ Special LIVE “赤色の響祭” | ぴあアリーナMM |
+| 2026/11/14〜15 | MyGO!!!!! 9th LIVE「つなぎ目の向こうに」 - 神戸再景編 - | ワールド記念ホール |
 
 ## Links
 
